@@ -401,10 +401,10 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	private void setUpNextAndPreviousButtons() {
 		// Create the image icons for the buttons.
 		Icon prevIcon = new ImageIcon(
-				PictureExplorer.class.getResource("leftArrow.gif"),
+				PictureExplorer.class.getResource("../Pictures/leftArrow.gif"),
 		"previous index");
 		Icon nextIcon = new ImageIcon(
-				PictureExplorer.class.getResource("rightArrow.gif"),
+				PictureExplorer.class.getResource("../Pictures/rightArrow.gif"),
 		"next index");
 
 		// Create the arrow buttons.
@@ -485,7 +485,6 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		JPanel locationPanel = new JPanel();
 		locationPanel.setLayout(new FlowLayout());
 		Box hBox = Box.createHorizontalBox();
-
 		// Create the labels.
 		xLabel = new JLabel("X:");
 		yLabel = new JLabel("Y:");
