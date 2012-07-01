@@ -505,7 +505,7 @@ public class Picture extends SimplePicture
 	 * Helper method for loading a picture in the current directory.
 	 */
 	protected static Picture loadPicture(String pictureName) {
-		URL url = Picture.class.getResource(pictureName);
+		URL url = Picture.class.getResource("Pictures/" + pictureName);
 		return new Picture(url.getFile().replaceAll("%20", " "));
 	}
 
