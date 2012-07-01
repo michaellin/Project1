@@ -245,9 +245,9 @@ public class Picture extends SimplePicture
 
 	private void lightenPixel(int x, int y, int amount) {
 		Pixel currentPixel = this.getPixel(x, y);
-		int newRed = currentPixel.getRed() - amount;
-		int newGreen = currentPixel.getGreen() - amount;
-		int newBlue =  currentPixel.getBlue() - amount;
+		int newRed = currentPixel.getRed() + amount;
+		int newGreen = currentPixel.getGreen() + amount;
+		int newBlue =  currentPixel.getBlue() + amount;
 		currentPixel.setRed(newRed);
 		currentPixel.setGreen(newGreen);
 		currentPixel.setBlue(newBlue);		
@@ -261,10 +261,30 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that has every color value of the Picture decreased
 	 *         by the darkenenAmount.
 	 */
-	public Picture darken(int darkenenAmount) {
+	public Picture darken(int darkenAmount) {
 		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture darkPicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				darkPicture.darkenPixel(h, w, darkenAmount);
+			}
+		}
+		return darkPicture;
 	}
+	
+	private void darkenPixel(int x, int y, int amount) {
+		Pixel currentPixel = this.getPixel(x, y);
+		int newRed = currentPixel.getRed() - amount;
+		int newGreen = currentPixel.getGreen() - amount;
+		int newBlue =  currentPixel.getBlue() - amount;
+		currentPixel.setRed(newRed);
+		currentPixel.setGreen(newGreen);
+		currentPixel.setBlue(newBlue);		
+	}
+
 
 	/**
 	 * Creates an image where the blue value has been increased by amount.The range of
