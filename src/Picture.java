@@ -295,10 +295,23 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addBlue(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture bluePicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				bluePicture.addBluePixel(h, w, amount);
+			}
+		}
+		return bluePicture;
 	}
 	
+	private void addBluePixel(int x, int y, int amount) {
+		Pixel currentPixel = this.getPixel(x, y);
+		int newBlue =  currentPixel.getBlue() + amount;
+		currentPixel.setBlue(newBlue);		
+	}
 	/**
 	 * Creates an image where the red value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -308,10 +321,22 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addRed(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
-	}
-	
+		Picture redPicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+			for(int h = 0; h < picHeight ; h++) {
+				for (int w = 0 ; w < picWidth ; w++) {
+					redPicture.addBluePixel(h, w, amount);
+				}
+			}
+			return redPicture;
+		}
+		
+		private void addRedPixel(int x, int y, int amount) {
+			Pixel currentPixel = this.getPixel(x, y);
+			int newRed =  currentPixel.getRed() + amount;
+			currentPixel.setRed(newRed);		
+		}
 	/**
 	 * Creates an image where the green value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -321,8 +346,22 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addGreen(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture greenPicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				greenPicture.addGreenPixel(h, w, amount);
+			}
+		}
+		return greenPicture;
+	}
+		
+	private void addGreenPixel(int x, int y, int amount) {
+		Pixel currentPixel = this.getPixel(x, y);
+		int newGreen =  currentPixel.getGreen() + amount;
+		currentPixel.setGreen(newGreen);		
 	}
 	
 	/** 
