@@ -198,7 +198,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				negPicture.setPixelToNegative(h, w);
+				negPicture.setPixelToNegative(w, h);
 			}
 		}
 		return negPicture;
@@ -236,7 +236,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				lightPicture.lightenPixel(h, w, lightenAmount);
+				lightPicture.lightenPixel(w, h, lightenAmount);
 			}
 		}
 		return lightPicture;
@@ -269,7 +269,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				darkPicture.darkenPixel(h, w, darkenAmount);
+				darkPicture.darkenPixel(w, h, darkenAmount);
 			}
 		}
 		return darkPicture;
@@ -383,8 +383,33 @@ public class Picture extends SimplePicture
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
-		return new Picture(this);
+		Picture chromaPicture = new Picture(this);
+		int picHeight, picWidth;
+		if (background.getHeight() < this.getHeight()){
+			picHeight = background.getHeight();
+		} else {
+			picHeight = this.getHeight();
+		}
+		if (background.getWidth() < this.getWidth()){
+			picWidth = background.getWidth();
+		} else {
+			picWidth = this.getWidth();
+		}
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				if(!this.getPixel(w,h).equals(chromaPicture.getPixel(w, h))){
+					Pixel currentPixel = chromaPicture.getPixel(w,h);
+					Pixel comparePixel = background.getPixel(w,h);
+					currentPixel.setRed(comparePixel.getRed());
+					currentPixel.setBlue(comparePixel.getBlue());
+					currentPixel.setGreen(comparePixel.getGreen());
+				}
+			}
+		}
+		return chromaPicture;
 	}
+	
 
 	//////////////////////////////// Level 2 //////////////////////////////////
 
@@ -516,7 +541,6 @@ public class Picture extends SimplePicture
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		return new Picture(this);
 	}
-
 
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
