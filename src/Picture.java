@@ -211,7 +211,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				negPicture.setPixelToNegative(h, w);
+				negPicture.setPixelToNegative(w, h);
 			}
 		}
 		return negPicture;
@@ -268,7 +268,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				lightPicture.lightenPixel(h, w, lightenAmount);
+				lightPicture.lightenPixel(w, h, lightenAmount);
 			}
 		}
 		return lightPicture;
@@ -331,7 +331,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				darkPicture.darkenPixel(h, w, darkenAmount);
+				darkPicture.darkenPixel(w, h, darkenAmount);
 			}
 		}
 		return darkPicture;
@@ -379,10 +379,23 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addBlue(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture bluePicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				bluePicture.addBluePixel(h, w, amount);
+			}
+		}
+		return bluePicture;
 	}
 	
+	private void addBluePixel(int x, int y, int amount) {
+		Pixel currentPixel = this.getPixel(x, y);
+		int newBlue =  currentPixel.getBlue() + amount;
+		currentPixel.setBlue(newBlue);		
+	}
 	/**
 	 * Creates an image where the red value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -392,10 +405,22 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addRed(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
-	}
-	
+		Picture redPicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+			for(int h = 0; h < picHeight ; h++) {
+				for (int w = 0 ; w < picWidth ; w++) {
+					redPicture.addBluePixel(h, w, amount);
+				}
+			}
+			return redPicture;
+		}
+		
+		private void addRedPixel(int x, int y, int amount) {
+			Pixel currentPixel = this.getPixel(x, y);
+			int newRed =  currentPixel.getRed() + amount;
+			currentPixel.setRed(newRed);		
+		}
 	/**
 	 * Creates an image where the green value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -405,8 +430,22 @@ public class Picture extends SimplePicture
 	 *         by amount.
 	 */
 	public Picture addGreen(int amount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture greenPicture = new Picture(this);
+		int picHeight = this.getHeight();
+		int picWidth = this.getWidth();
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				greenPicture.addGreenPixel(h, w, amount);
+			}
+		}
+		return greenPicture;
+	}
+		
+	private void addGreenPixel(int x, int y, int amount) {
+		Pixel currentPixel = this.getPixel(x, y);
+		int newGreen =  currentPixel.getGreen() + amount;
+		currentPixel.setGreen(newGreen);		
 	}
 	
 	/** 
@@ -428,8 +467,33 @@ public class Picture extends SimplePicture
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
-		return new Picture(this);
+		Picture chromaPicture = new Picture(this);
+		int picHeight, picWidth;
+		if (background.getHeight() < this.getHeight()){
+			picHeight = background.getHeight();
+		} else {
+			picHeight = this.getHeight();
+		}
+		if (background.getWidth() < this.getWidth()){
+			picWidth = background.getWidth();
+		} else {
+			picWidth = this.getWidth();
+		}
+
+		for(int h = 0; h < picHeight ; h++) {
+			for (int w = 0 ; w < picWidth ; w++) {
+				if(!this.getPixel(w,h).equals(chromaPicture.getPixel(w, h))){
+					Pixel currentPixel = chromaPicture.getPixel(w,h);
+					Pixel comparePixel = background.getPixel(w,h);
+					currentPixel.setRed(comparePixel.getRed());
+					currentPixel.setBlue(comparePixel.getBlue());
+					currentPixel.setGreen(comparePixel.getGreen());
+				}
+			}
+		}
+		return chromaPicture;
 	}
+	
 
 	//////////////////////////////// Level 2 //////////////////////////////////
 
@@ -561,7 +625,6 @@ public class Picture extends SimplePicture
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		return new Picture(this);
 	}
-
 
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
