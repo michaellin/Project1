@@ -177,7 +177,20 @@ public class Picture extends SimplePicture
 			return false;
 		}
 
-		// You could put other tests here..
+		if (!Picture.negateWorks())
+		{
+			return false;
+		}
+
+		if (!Picture.lightenWorks())
+		{
+			return false;
+		}
+
+		if (!Picture.darkenWorks())
+		{
+			return false;
+		}
 
 		return true;
 	}
@@ -207,8 +220,8 @@ public class Picture extends SimplePicture
 	/**
 	 * Convenience method to set each pixel to its negative
 	 * color.
-	 * @param x The x coor of the pixel to negate
-	 * @param y The y coor of the pixel to negate
+	 * @param x The x coor of the pixel to negate.
+	 * @param y The y coor of the pixel to negate.
 	 */
 	private void setPixelToNegative(int x, int y) {
 		Pixel currentPixel = this.getPixel(x, y);
@@ -219,7 +232,26 @@ public class Picture extends SimplePicture
 		currentPixel.setGreen(newGreen);
 		currentPixel.setBlue(newBlue);		
 	}
-	
+
+	/**
+	 * Test method for negate() This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean negateWorks()
+	{
+		Picture correctPic   = Picture.loadPicture("Creek_negate.bmp");
+		Picture testPic      = Picture.loadPicture("Creek.bmp").negate(); 
+		Pixel correctPixel   = correctPic.getPixel(10, 10);
+		Pixel testPixel      = testPic.getPixel(10,10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
+		boolean redCorrect   = correctPixel.getRed() == testPixel.getRed();
+		boolean greenCorrect = correctPixel.getGreen() == testPixel.getGreen(); 
+		boolean blueCorrect  = correctPixel.getBlue() == testPixel.getBlue(); 
+		boolean alphaCorrect = correctPixel.getAlpha() == testPixel.getAlpha();
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+
+
 	/**
 	 * Creates an image that is lighter than the original image. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -243,6 +275,13 @@ public class Picture extends SimplePicture
 	}
 
 
+	/**
+	 * Convenience method to lighten each pixel by param amount.
+	 * color.
+	 * @param x The x coor of the pixel to negate.
+	 * @param y The y coor of the pixel to negate.
+	 * @param amount The amount to lighten by.
+	 */
 	private void lightenPixel(int x, int y, int amount) {
 		Pixel currentPixel = this.getPixel(x, y);
 		int newRed = currentPixel.getRed() + amount;
@@ -252,6 +291,29 @@ public class Picture extends SimplePicture
 		currentPixel.setGreen(newGreen);
 		currentPixel.setBlue(newBlue);		
 	}
+
+
+	/**
+	 * Test method for lighten. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean lightenWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel focalPixel     = bg.getPixel(10, 10);
+		int originalAlpha    = focalPixel.getColor().getAlpha();
+		bg.lighten(40);
+		Pixel testPixel      = bg.getPixel(10, 10);
+		int goalRed          = (int) focalPixel.getRed() - 40;
+		int goalGreen        = (int) focalPixel.getGreen() - 40;
+		int goalBlue         = (int) focalPixel.getBlue() - 40;
+		boolean redCorrect   = testPixel.getRed() == goalRed;
+		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
+		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+
 
 	/**
 	 * Creates an image that is darker than the original image.The range of
@@ -283,6 +345,28 @@ public class Picture extends SimplePicture
 		currentPixel.setRed(newRed);
 		currentPixel.setGreen(newGreen);
 		currentPixel.setBlue(newBlue);		
+	}
+
+
+	/**
+	 * Test method for darken. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean darkenWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel focalPixel     = bg.getPixel(10, 10);
+		int originalAlpha    = focalPixel.getColor().getAlpha();
+		bg.darken(100);
+		Pixel testPixel      = bg.getPixel(10, 10);
+		int goalRed          = (int) focalPixel.getRed() + 100;
+		int goalGreen        = (int) focalPixel.getGreen() + 100;
+		int goalBlue         = (int) focalPixel.getBlue() + 100;
+		boolean redCorrect   = testPixel.getRed() == goalRed;
+		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
+		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
 	}
 
 
@@ -525,7 +609,7 @@ public class Picture extends SimplePicture
 	 * Helper method for loading a picture in the current directory.
 	 */
 	protected static Picture loadPicture(String pictureName) {
-		URL url = Picture.class.getResource(pictureName);
+		URL url = Picture.class.getResource("../Pictures/" + pictureName);
 		return new Picture(url.getFile().replaceAll("%20", " "));
 	}
 
