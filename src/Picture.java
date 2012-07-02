@@ -155,14 +155,14 @@ public class Picture extends SimplePicture
 	private static boolean setPixelToGrayWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel focalPixel     = bg.getPixel(10, 10);
+		Pixel testPixel     = bg.getPixel(10, 10);
 		bg.setPixelToGray(10, 10);
-		int goalColor        = (int) focalPixel.getAverage();
-		int originalAlpha    = focalPixel.getColor().getAlpha();
-		boolean redCorrect   = focalPixel.getRed() == goalColor;
-		boolean greenCorrect = focalPixel.getGreen() == goalColor; 
-		boolean blueCorrect  = focalPixel.getBlue() == goalColor;
-		boolean alphaCorrect = focalPixel.getAlpha() == originalAlpha;
+		int goalColor        = (int) testPixel.getAverage();
+		int originalAlpha    = testPixel.getColor().getAlpha();
+		boolean redCorrect   = testPixel.getRed() == goalColor;
+		boolean greenCorrect = testPixel.getGreen() == goalColor; 
+		boolean blueCorrect  = testPixel.getBlue() == goalColor;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
 		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
 	}
 
@@ -188,6 +188,21 @@ public class Picture extends SimplePicture
 		}
 
 		if (!Picture.darkenWorks())
+		{
+			return false;
+		}
+
+		if (!Picture.addRedWorks())
+		{
+			return false;
+		}
+		
+		if (!Picture.addGreenWorks())
+		{
+			return false;
+		}
+
+		if (!Picture.addBlueWorks())
 		{
 			return false;
 		}
@@ -277,9 +292,8 @@ public class Picture extends SimplePicture
 
 	/**
 	 * Convenience method to lighten each pixel by param amount.
-	 * color.
-	 * @param x The x coor of the pixel to negate.
-	 * @param y The y coor of the pixel to negate.
+	 * @param x The x coor of the pixel to lighten.
+	 * @param y The y coor of the pixel to lighten.
 	 * @param amount The amount to lighten by.
 	 */
 	private void lightenPixel(int x, int y, int amount) {
@@ -300,13 +314,13 @@ public class Picture extends SimplePicture
 	private static boolean lightenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel focalPixel     = bg.getPixel(10, 10);
-		int originalAlpha    = focalPixel.getColor().getAlpha();
+		Pixel correctPixel      = bg.getPixel(10, 10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
 		bg.lighten(40);
 		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) focalPixel.getRed() - 40;
-		int goalGreen        = (int) focalPixel.getGreen() - 40;
-		int goalBlue         = (int) focalPixel.getBlue() - 40;
+		int goalRed          = (int) correctPixel.getRed() - 40;
+		int goalGreen        = (int) correctPixel.getGreen() - 40;
+		int goalBlue         = (int) correctPixel.getBlue() - 40;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
@@ -337,6 +351,13 @@ public class Picture extends SimplePicture
 		return darkPicture;
 	}
 	
+
+	/**
+	 * Convenience method to darken each pixel by param amount.
+	 * @param x The x coor of the pixel to darken.
+	 * @param y The y coor of the pixel to darken.
+	 * @param amount The amount to darken by.
+	 */
 	private void darkenPixel(int x, int y, int amount) {
 		Pixel currentPixel = this.getPixel(x, y);
 		int newRed = currentPixel.getRed() - amount;
@@ -355,13 +376,13 @@ public class Picture extends SimplePicture
 	private static boolean darkenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel focalPixel     = bg.getPixel(10, 10);
-		int originalAlpha    = focalPixel.getColor().getAlpha();
+		Pixel correctPixel      = bg.getPixel(10, 10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
 		bg.darken(100);
 		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) focalPixel.getRed() + 100;
-		int goalGreen        = (int) focalPixel.getGreen() + 100;
-		int goalBlue         = (int) focalPixel.getBlue() + 100;
+		int goalRed          = (int) correctPixel.getRed() + 100;
+		int goalGreen        = (int) correctPixel.getGreen() + 100;
+		int goalBlue         = (int) correctPixel.getBlue() + 100;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
@@ -391,11 +412,43 @@ public class Picture extends SimplePicture
 		return bluePicture;
 	}
 	
+
+	/**
+	 * Convenience method to add blue each pixel by param amount.
+	 * @param x The x coor of the pixel to add Blue.
+	 * @param y The y coor of the pixel to add Blue.
+	 * @param amount The amount of Blue to add.
+	 */
 	private void addBluePixel(int x, int y, int amount) {
 		Pixel currentPixel = this.getPixel(x, y);
 		int newBlue =  currentPixel.getBlue() + amount;
 		currentPixel.setBlue(newBlue);		
 	}
+
+
+	/**
+	 * Test method for addBlue. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean addBlueWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel correctPixel      = bg.getPixel(10, 10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
+		bg.addBlue(100);
+		Pixel testPixel      = bg.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed();
+		int goalGreen        = (int) correctPixel.getGreen();
+		int goalBlue         = (int) correctPixel.getBlue() + 100;
+		boolean redCorrect   = testPixel.getRed() == goalRed;
+		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
+		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+
+
+
 	/**
 	 * Creates an image where the red value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -416,11 +469,41 @@ public class Picture extends SimplePicture
 			return redPicture;
 		}
 		
+
+	/**
+	 * Convenience method to add red each pixel by param amount.
+	 * @param x The x coor of the pixel to add Red.
+	 * @param y The y coor of the pixel to add Red.
+	 * @param amount The amount of Red to add.
+	 */
 		private void addRedPixel(int x, int y, int amount) {
 			Pixel currentPixel = this.getPixel(x, y);
 			int newRed =  currentPixel.getRed() + amount;
 			currentPixel.setRed(newRed);		
 		}
+
+
+	/**
+	 * Test method for addRed. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean addRedWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel correctPixel      = bg.getPixel(10, 10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
+		bg.addRed(100);
+		Pixel testPixel      = bg.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed() + 100;
+		int goalGreen        = (int) correctPixel.getGreen();
+		int goalBlue         = (int) correctPixel.getBlue();
+		boolean redCorrect   = testPixel.getRed() == goalRed;
+		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
+		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+
 	/**
 	 * Creates an image where the green value has been increased by amount. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -442,12 +525,42 @@ public class Picture extends SimplePicture
 		return greenPicture;
 	}
 		
+
+	/**
+	 * Convenience method to green each pixel by param amount.
+	 * @param x The x coor of the pixel to add Green.
+	 * @param y The y coor of the pixel to add Green.
+	 * @param amount The amount of Green to add.
+	 */
 	private void addGreenPixel(int x, int y, int amount) {
 		Pixel currentPixel = this.getPixel(x, y);
 		int newGreen =  currentPixel.getGreen() + amount;
 		currentPixel.setGreen(newGreen);		
 	}
+
 	
+	/**
+	 * Test method for addGreen. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean addGreenWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel correctPixel      = bg.getPixel(10, 10);
+		int originalAlpha    = correctPixel.getColor().getAlpha();
+		bg.addGreen(100);
+		Pixel testPixel      = bg.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed();
+		int goalGreen        = (int) correctPixel.getGreen() + 100;
+		int goalBlue         = (int) correctPixel.getBlue();
+		boolean redCorrect   = testPixel.getRed() == goalRed;
+		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
+		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+
+
 	/** 
 	 * @param x x-coordinate of the pixel currently selected.
 	 * @param y y-coordinate of the pixel currently selected.
