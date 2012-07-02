@@ -580,6 +580,7 @@ public class Picture extends SimplePicture
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
+		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
 		int picHeight, picWidth;
 		if (background.getHeight() < this.getHeight()){
@@ -595,16 +596,24 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if(!this.getPixel(w,h).equals(chromaPicture.getPixel(w, h))){
+				if(this.colorDistance(w, h, comparePixel)<=threshold){
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
-					Pixel comparePixel = background.getPixel(w,h);
-					currentPixel.setRed(comparePixel.getRed());
-					currentPixel.setBlue(comparePixel.getBlue());
-					currentPixel.setGreen(comparePixel.getGreen());
+					Pixel backgroundPixel = background.getPixel(w,h);
+					currentPixel.setRed(backgroundPixel.getRed());
+					currentPixel.setBlue(backgroundPixel.getBlue());
+					currentPixel.setGreen(backgroundPixel.getGreen());
 				}
 			}
 		}
 		return chromaPicture;
+	}
+	
+	public double colorDistance(int x, int y, Pixel comparison){
+		Pixel myPixel = this.getPixel(x, y);
+		double red = Math.pow(myPixel.getRed() - comparison.getRed(), 2);
+		double blue = Math.pow(myPixel.getBlue() - comparison.getBlue(), 2);
+		double green = Math.pow(myPixel.getGreen() - comparison.getGreen(), 2);
+		return Math.sqrt(red + blue + green);
 	}
 	
 
