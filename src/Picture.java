@@ -582,22 +582,12 @@ public class Picture extends SimplePicture
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
-		int picHeight, picWidth;
-		/* TODO Replace with Math.min()*/
-		if (background.getHeight() < this.getHeight()){
-			picHeight = background.getHeight();
-		} else {
-			picHeight = this.getHeight();
-		}
-		if (background.getWidth() < this.getWidth()){
-			picWidth = background.getWidth();
-		} else {
-			picWidth = this.getWidth();
-		}
-
-		for(int h = 0; h < picHeight ; h++) {
+		int picHeight = Math.min(background.getHeight(), this.getHeight());
+		int picWidth = Math.min(background.getWidth(), this.getWidth());
+		
+		for (int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if(this.colorDistance(w, h, comparePixel)<=threshold){
+				if (this.colorDistance(w, h, comparePixel) <= threshold) {
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
 					Pixel backgroundPixel = background.getPixel(w,h);
 					currentPixel.setRed(backgroundPixel.getRed());
