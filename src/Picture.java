@@ -583,6 +583,7 @@ public class Picture extends SimplePicture
 		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
 		int picHeight, picWidth;
+		/* TODO Replace with Math.min()*/
 		if (background.getHeight() < this.getHeight()){
 			picHeight = background.getHeight();
 		} else {
