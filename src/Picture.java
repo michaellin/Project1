@@ -643,6 +643,8 @@ public class Picture extends SimplePicture
 		}
 		return newPic;
 	}
+		
+
 
 
 	private int toPos(int num) {
