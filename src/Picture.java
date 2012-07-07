@@ -645,8 +645,6 @@ public class Picture extends SimplePicture
 	}
 		
 
-
-
 	private int toPos(int num) {
 		int result = num;
 		while (result < 0) {
