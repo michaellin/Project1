@@ -639,10 +639,21 @@ public class Picture extends SimplePicture
 			return newPic;
 		} else if (rotNums == 2) {
 			Picture newPic = new Picture(this.getHeight(), this.getWidth());
-			for (int h = 0 ; h < height ; h++) {
-				for (int w = 0 ; w < width ; w++) {
+			for (int h = 0 ; h < this.getHeight() ; h++) {
+				for (int w = 0 ; w < this.getWidth() ; w++) {
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(this.getHeight() - h,
+														this.getWidth() - w);
+					toChange.setColor(toSet);
+				}
+			}
+		} else if (rotNums == 3) {
+			
 		}
 	}
+
+	private int toPos(int num) {
+		
 
 	/**
 	 * Flips this Picture about the given axis. The axis can be one of
