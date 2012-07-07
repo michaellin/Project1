@@ -579,7 +579,6 @@ public class Picture extends SimplePicture
 	 * 	the top left corner (0, 0).
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
 		int picHeight = Math.min(background.getHeight(), this.getHeight());
@@ -587,7 +586,7 @@ public class Picture extends SimplePicture
 		
 		for (int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if (this.colorDistance(this.getPixel(w,h), comparePixel) <= threshold) {
+				if (this.colorDistance(w, h, comparePixel) <= threshold) {
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
 					Pixel backgroundPixel = background.getPixel(w,h);
 					currentPixel.setRed(backgroundPixel.getRed());
@@ -599,7 +598,8 @@ public class Picture extends SimplePicture
 		return chromaPicture;
 	}
 	
-	public double colorDistance(Pixel myPixel, Pixel comparison){
+	public double colorDistance(int x, int y, Pixel comparison){
+		Pixel myPixel = this.getPixel(x, y);
 		double red = Math.pow(myPixel.getRed() - comparison.getRed(), 2);
 		double blue = Math.pow(myPixel.getBlue() - comparison.getBlue(), 2);
 		double green = Math.pow(myPixel.getGreen() - comparison.getGreen(), 2);
@@ -622,37 +622,36 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that is the rotated version of this Picture.
 	 */
 	 /* TODO still need to be tested */
-
 	public Picture rotate (int rotations) {
-		int rotNums = rotations % 4;
-		if (rotNums == 1) {
-			int height = this.getHeight();
-			int width = this.getWidth();
-			Picture newPic = new Picture(height, width);
+		int rotNums = toPos(rotations) % 4;
+		Picture tmpPic;
+		Picture newPic = this;
+		while (rotNums > 0) {
+			tmpPic = newPic;
+			int height = tmpPic.getHeight();
+			int width = tmpPic.getWidth();
+			newPic = new Picture(height, width);
 			for (int h = 0 ; h < height ; h++) {
 				for (int w = 0 ; w < width ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(h, w);
+					Color toSet = tmpPic.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(height - h - 1, w);
 					toChange.setColor(toSet);
 				}
 			}
-			return newPic;
-		} else if (rotNums == 2) {
-			Picture newPic = new Picture(this.getHeight(), this.getWidth());
-			for (int h = 0 ; h < this.getHeight() ; h++) {
-				for (int w = 0 ; w < this.getWidth() ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getHeight() - h,
-														this.getWidth() - w);
-					toChange.setColor(toSet);
-				}
-			}
-		} else if (rotNums == 3) {
-			
+			rotNums --;
 		}
-
-
+		return newPic;
 	}
+		
+
+	private int toPos(int num) {
+		int result = num;
+		while (result < 0) {
+			result = result + 4;
+		}
+		return result;
+	}
+		
 
 	/**
 	 * Flips this Picture about the given axis. The axis can be one of
@@ -673,8 +672,7 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture flipped about the axis provided.
 	 */
-	public Picture flip(int axis) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
+	public Picture flip (int axis) {
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		if(axis == Picture.HORIZONTAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -711,7 +709,6 @@ public class Picture extends SimplePicture
 		}else{
 			throw new IllegalArgumentException("invalid argument given");
 		}
-		
 	}
 
 	/**
@@ -732,7 +729,15 @@ public class Picture extends SimplePicture
 	 *         white.
 	 */
 	public Picture showEdges(int threshold) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
+		int width = this.getWidth();
+		int height = this.getHeight();
+		Picture newPic = new Picture(width, height);
+		for (int h = 0 ; h < height ; h++) {
+			for (int w = 0 ; w < width ; w++) {
+				if (h != 0) {  	
+				}
+			}
+		}
 		return new Picture(this);
 	}
 
