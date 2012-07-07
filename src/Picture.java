@@ -696,7 +696,15 @@ public class Picture extends SimplePicture
 	 *         white.
 	 */
 	public Picture showEdges(int threshold) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
+		int width = this.getWidth();
+		int height = this.getHeight();
+		Picture newPic = new Picture(width, height);
+		for (int h = 0 ; h < height ; h++) {
+			for (int w = 0 ; w < width ; w++) {
+				if (h != 0) {  	
+				}
+			}
+		}
 		return new Picture(this);
 	}
 
