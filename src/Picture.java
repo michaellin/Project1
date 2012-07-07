@@ -633,7 +633,7 @@ public class Picture extends SimplePicture
 	 */
 	public Picture rotate(int rotations) {
 		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		return new Picture(this);
+		Picture flip = new Picture(this.getHeight(), this.getWidth(), )
 	}
 
 	/**
