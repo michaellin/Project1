@@ -582,21 +582,12 @@ public class Picture extends SimplePicture
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
-		int picHeight, picWidth;
-		if (background.getHeight() < this.getHeight()){
-			picHeight = background.getHeight();
-		} else {
-			picHeight = this.getHeight();
-		}
-		if (background.getWidth() < this.getWidth()){
-			picWidth = background.getWidth();
-		} else {
-			picWidth = this.getWidth();
-		}
-
-		for(int h = 0; h < picHeight ; h++) {
+		int picHeight = Math.min(background.getHeight(), this.getHeight());
+		int picWidth = Math.min(background.getWidth(), this.getWidth());
+		
+		for (int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if(this.colorDistance(w, h, comparePixel)<=threshold){
+				if (this.colorDistance(w, h, comparePixel) <= threshold) {
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
 					Pixel backgroundPixel = background.getPixel(w,h);
 					currentPixel.setRed(backgroundPixel.getRed());
@@ -631,9 +622,29 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture that is the rotated version of this Picture.
 	 */
+	 /* TODO still need to be tested */
 	public Picture rotate(int rotations) {
+
 		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		Picture flip = new Picture(this.getHeight(), this.getWidth(), )
+		Picture flip = new Picture(this.getHeight(), this.getWidth());
+		int height = this.getHeight();
+		int width = this.getWidth();
+		Picture newPic;
+		if(rotations%2 == 1){
+			newPic = new Picture(height, width);
+		}
+		else{
+			newPic = new Picture(width, height);
+		}
+		for (int h = 0 ; h < height ; h++) {
+			for (int w = 0 ; w < width ; w++) {
+				Color toSet = this.getPixel(w, h).getColor();
+				Pixel toChange = newPic.getPixel(h, w);
+				toChange.setColor(toSet);
+			}
+		}
+		return newPic;
+
 	}
 
 	/**
