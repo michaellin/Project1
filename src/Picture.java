@@ -598,8 +598,7 @@ public class Picture extends SimplePicture
 		return chromaPicture;
 	}
 	
-	public double colorDistance(int x, int y, Pixel comparison){
-		Pixel myPixel = this.getPixel(x, y);
+	public double colorDistance(Pixel myPixel, Pixel comparison){
 		double red = Math.pow(myPixel.getRed() - comparison.getRed(), 2);
 		double blue = Math.pow(myPixel.getBlue() - comparison.getBlue(), 2);
 		double green = Math.pow(myPixel.getGreen() - comparison.getGreen(), 2);
