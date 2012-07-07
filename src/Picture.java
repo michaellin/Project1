@@ -695,6 +695,13 @@ public class Picture extends SimplePicture
 			return newPic;		
 		}
 		else if(axis == Picture.FORWARD_DIAGONAL){
+			for(int w = this.getWidth(); w > 0; w--){
+				for(int h = 0; h < this.getHeight(); h++){
+					Color toSet = this.getPixel(h, w).getColor();
+					Pixel toChange = newPic.getPixel(w, h);
+					toChange.setColor(toSet);
+				}
+			}
 			
 		}else if(axis == Picture.BACKWARD_DIAGONAL){
 			
