@@ -579,7 +579,6 @@ public class Picture extends SimplePicture
 	 * 	the top left corner (0, 0).
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		Pixel comparePixel = this.getPixel(xRef, yRef);
 		Picture chromaPicture = new Picture(this);
 		int picHeight = Math.min(background.getHeight(), this.getHeight());
