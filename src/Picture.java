@@ -643,43 +643,7 @@ public class Picture extends SimplePicture
 		}
 		return newPic;
 	}
-/*
-		if (rotNums == 1) {
-			int height = this.getHeight();
-			int width = this.getWidth();
-			Picture newPic = new Picture(height, width);
-			for (int h = 0 ; h < height ; h++) {
-				for (int w = 0 ; w < width ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(h, w);
-					toChange.setColor(toSet);
-				}
-			}
-		} else if (rotNums == 2) {
-			Picture newPic = new Picture(this.getWidth(), this.getHeight());
-			for (int h = 0 ; h < this.getHeight() ; h++) {
-				for (int w = 0 ; w < this.getWidth() ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getWidth() - w,
-														this.getHeight() - h);
-					toChange.setColor(toSet);
-				}
-			}
-		} else if (rotNums == 3) {
-			int height = this.getHeight();
-			int width = this.getWidth();
-			Pictures newPic = new Picture(height, width);
-			for (int h = 0 ; h < height ; h++) {
-				for (int w = 0 ; w < width ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(height - h, width - w);
-					toChange.setColor(toSet);
-				}
-			}
-		}
-		return newPic
-	}
-						*/
+
 
 	private int toPos(int num) {
 		int result = num;
