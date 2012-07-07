@@ -623,29 +623,24 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that is the rotated version of this Picture.
 	 */
 	 /* TODO still need to be tested */
-	public Picture rotate(int rotations) {
-
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
-		Picture flip = new Picture(this.getHeight(), this.getWidth());
-		int height = this.getHeight();
-		int width = this.getWidth();
-		Picture newPic;
-		if(rotations%2 == 1){
-			newPic = new Picture(height, width);
-		}
-		else{
-			newPic = new Picture(width, height);
-		}
-		for (int h = 0 ; h < height ; h++) {
-			for (int w = 0 ; w < width ; w++) {
-				Color toSet = this.getPixel(w, h).getColor();
-				Pixel toChange = newPic.getPixel(h, w);
-				toChange.setColor(toSet);
+	public Picture rotate (int rotations) {
+		int rotNums = rotations % 4;
+		if (rotNums == 1) {
+			int height = this.getHeight();
+			int width = this.getWidth();
+			Picture newPic = new Picture(height, width);
+			for (int h = 0 ; h < height ; h++) {
+				for (int w = 0 ; w < width ; w++) {
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(h, w);
+					toChange.setColor(toSet);
+				}
 			}
+			return newPic;
+		} else if (rotNums == 2) {
+			Picture newPic = new Picture(this.getHeight(), this.getWidth());
 		}
-		return newPic;
 
-	}
 
 	/**
 	 * Flips this Picture about the given axis. The axis can be one of
