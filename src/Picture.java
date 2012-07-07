@@ -262,7 +262,7 @@ public class Picture extends SimplePicture
 		boolean redCorrect   = correctPixel.getRed() == testPixel.getRed();
 		boolean greenCorrect = correctPixel.getGreen() == testPixel.getGreen(); 
 		boolean blueCorrect  = correctPixel.getBlue() == testPixel.getBlue(); 
-		boolean alphaCorrect = correctPixel.getAlpha() == testPixel.getAlpha();
+		boolean alphaCorrect = originalAlpha == testPixel.getAlpha();
 		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
 	}
 
@@ -463,7 +463,7 @@ public class Picture extends SimplePicture
 		int picWidth = this.getWidth();
 			for(int h = 0; h < picHeight ; h++) {
 				for (int w = 0 ; w < picWidth ; w++) {
-					redPicture.addBluePixel(h, w, amount);
+					redPicture.addRedPixel(h, w, amount);
 				}
 			}
 			return redPicture;
@@ -586,7 +586,7 @@ public class Picture extends SimplePicture
 		
 		for (int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if (this.colorDistance(w, h, comparePixel) <= threshold) {
+				if (this.colorDistance(this.getPixel(w,h), comparePixel) <= threshold) {
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
 					Pixel backgroundPixel = background.getPixel(w,h);
 					currentPixel.setRed(backgroundPixel.getRed());
