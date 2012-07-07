@@ -624,7 +624,24 @@ public class Picture extends SimplePicture
 	 */
 	 /* TODO still need to be tested */
 	public Picture rotate (int rotations) {
-		int rotNums = rotations % 4;
+		int rotNums = toPos(rotations) % 4;
+		Picture newPic = this;
+		while (rotNums > 0) {
+			int height = this.getHeight();
+			int width = this.getWidth();
+			newPic = new Picture(height, width);
+			for (int h = 0 ; h < height ; h++) {
+				for (int w = 0 ; w < width ; w++) {
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(height - h - 1, w);
+					toChange.setColor(toSet);
+				}
+			}
+			rotNums --;
+		}
+		return newPic;
+	}
+/*
 		if (rotNums == 1) {
 			int height = this.getHeight();
 			int width = this.getWidth();
@@ -636,23 +653,39 @@ public class Picture extends SimplePicture
 					toChange.setColor(toSet);
 				}
 			}
-			return newPic;
 		} else if (rotNums == 2) {
-			Picture newPic = new Picture(this.getHeight(), this.getWidth());
+			Picture newPic = new Picture(this.getWidth(), this.getHeight());
 			for (int h = 0 ; h < this.getHeight() ; h++) {
 				for (int w = 0 ; w < this.getWidth() ; w++) {
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getHeight() - h,
-														this.getWidth() - w);
+					Pixel toChange = newPic.getPixel(this.getWidth() - w,
+														this.getHeight() - h);
 					toChange.setColor(toSet);
 				}
 			}
 		} else if (rotNums == 3) {
-			
+			int height = this.getHeight();
+			int width = this.getWidth();
+			Pictures newPic = new Picture(height, width);
+			for (int h = 0 ; h < height ; h++) {
+				for (int w = 0 ; w < width ; w++) {
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(height - h, width - w);
+					toChange.setColor(toSet);
+				}
+			}
 		}
+		return newPic
 	}
+						*/
 
 	private int toPos(int num) {
+		int result = num;
+		while (result < 0) {
+			result = result + 4;
+		}
+		return result;
+	}
 		
 
 	/**
