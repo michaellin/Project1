@@ -638,7 +638,9 @@ public class Picture extends SimplePicture
 			}
 			return newPic;
 		} else if (rotNums == 2) {
-			Picture newPic = new Pictures(this.getHeight(), this.getWidth());
+			Picture newPic = new Picture(this.getHeight(), this.getWidth());
+			for (int h = 0 ; h < height ; h++) {
+				for (int w = 0 ; w < width ; w++) {
 		}
 	}
 
