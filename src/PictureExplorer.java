@@ -996,7 +996,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 			createAndInitScrollingImage();
 		}
 		if (a.getActionCommand().equals(rotate)) {
-			picture = new Picture(picture.rotate(1));
+			picture = new Picture(picture.rotate(2));
 			createAndInitScrollingImage();
 		}
 		if (a.getActionCommand().equals(blur)) {

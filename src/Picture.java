@@ -625,14 +625,16 @@ public class Picture extends SimplePicture
 	 /* TODO still need to be tested */
 	public Picture rotate (int rotations) {
 		int rotNums = toPos(rotations) % 4;
+		Picture tmpPic;
 		Picture newPic = this;
 		while (rotNums > 0) {
-			int height = this.getHeight();
-			int width = this.getWidth();
+			tmpPic = newPic;
+			int height = tmpPic.getHeight();
+			int width = tmpPic.getWidth();
 			newPic = new Picture(height, width);
 			for (int h = 0 ; h < height ; h++) {
 				for (int w = 0 ; w < width ; w++) {
-					Color toSet = this.getPixel(w, h).getColor();
+					Color toSet = tmpPic.getPixel(w, h).getColor();
 					Pixel toChange = newPic.getPixel(height - h - 1, w);
 					toChange.setColor(toSet);
 				}
