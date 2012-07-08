@@ -2,6 +2,7 @@ package src;
 import java.awt.Color;
 
 import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /*
  * This testing framework provides basic level tests for 

@@ -677,7 +677,7 @@ public class Picture extends SimplePicture
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h< this.getHeight(); h++){
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(w, this.getHeight() - h);
+					Pixel toChange = newPic.getPixel(w, this.getHeight() - h - 1);
 					toChange.setColor(toSet);
 				}
 			}			
@@ -686,7 +686,7 @@ public class Picture extends SimplePicture
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getWidth() - w, h);
+					Pixel toChange = newPic.getPixel(this.getWidth()-w - 1, h);
 					toChange.setColor(toSet);
 				}
 			}	
@@ -695,9 +695,9 @@ public class Picture extends SimplePicture
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
 					int xCoord = w - newPic.getWidth()/2;
-					int yCoord = h - newPic.getWidth()/2;
+					int yCoord = h - newPic.getHeight()/2;
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(yCoord + newPic.getWidth()/2, xCoord + newPic.getHeight()/2);
+					Pixel toChange = newPic.getPixel(yCoord + newPic.getWidth()/2 -1, xCoord + newPic.getHeight()/2-1);
 					toChange.setColor(toSet);
 				}
 			}
@@ -706,7 +706,7 @@ public class Picture extends SimplePicture
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
 					int xCoord = w - newPic.getWidth()/2;
-					int yCoord = h - newPic.getWidth()/2;
+					int yCoord = h - newPic.getHeight()/2;
 					Color toSet = this.getPixel(w, h).getColor();
 					Pixel toChange = newPic.getPixel(-(yCoord + newPic.getWidth()/2), -(xCoord + newPic.getHeight()/2));
 					toChange.setColor(toSet);
@@ -934,7 +934,7 @@ public class Picture extends SimplePicture
 		Picture initialPicture = new Picture(
 				FileChooser.pickAFile(FileChooser.OPEN));
 		initialPicture.explore();
-		//Picture mine = initialPicture.flip(Picture.HORIZONTAL);
+		Picture mine = initialPicture.flip(Picture.HORIZONTAL);
 	}
 
 } // End of Picture class
