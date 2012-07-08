@@ -671,8 +671,16 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture flipped about the axis provided.
 	 */
-	public Picture flip(int axis) {
-		Picture newPic = new Picture(this.getWidth(), this.getHeight());
+	public Picture flip(int axis) {		
+		Picture newPic;
+		if (axis == Picture.VERTICAL || axis == Picture.HORIZONTAL){
+			newPic = new Picture(this.getWidth(), this.getHeight());
+		}
+		else if (axis == Picture.FORWARD_DIAGONAL || axis == Picture.BACKWARD_DIAGONAL){
+			newPic = new Picture(this.getHeight(), this.getWidth());
+		}else{
+			throw new IllegalArgumentException("invalid argument");
+		}
 		if(axis == Picture.HORIZONTAL){
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h< this.getHeight(); h++){
@@ -680,7 +688,8 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(w, this.getHeight() - h - 1);
 					toChange.setColor(toSet);
 				}
-			}			
+			}
+			return newPic;
 		}
 		else if(axis == Picture.VERTICAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -691,27 +700,36 @@ public class Picture extends SimplePicture
 				}
 			}	
 		}
+		
 		else if(axis == Picture.FORWARD_DIAGONAL){
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					int xCoord = w - newPic.getWidth()/2;
-					int yCoord = h - newPic.getHeight()/2;
+					int xCoord = -(w - this.getWidth()/2);
+					int yCoord = -(this.getHeight()/2 - h - 1);
+					int xConv = yCoord + this.getWidth()/2 - 1;
+					int yConv = xCoord+this.getHeight()/2 - 1;
+					System.out.println(h + " " + yCoord + " " + xConv + " " + yConv + " " + newPic.getWidth() + " " + newPic.getHeight());
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(yCoord + newPic.getWidth()/2 -1, xCoord + newPic.getHeight()/2-1);
+					Pixel toChange = newPic.getPixel(xConv, yConv);
 					toChange.setColor(toSet);
 				}
 			}
 			
 		}else if(axis == Picture.BACKWARD_DIAGONAL){
+			
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					int xCoord = w - newPic.getWidth()/2;
-					int yCoord = h - newPic.getHeight()/2;
+					int xCoord = (w - this.getWidth()/2);
+					int yCoord = (this.getHeight()/2 - h -1);
+					int xConv = yCoord + this.getWidth()/2 - 1;
+					int yConv = xCoord+this.getHeight()/2 - 1;
+					System.out.println(xConv + " " + yConv + " " + newPic.getWidth() + " " + newPic.getHeight());
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(-(yCoord + newPic.getWidth()/2), -(xCoord + newPic.getHeight()/2));
+					Pixel toChange = newPic.getPixel(xConv, yConv);
 					toChange.setColor(toSet);
 				}
 			}
+			
 		}
 		return newPic;
 	}
@@ -965,7 +983,6 @@ public class Picture extends SimplePicture
 		Picture initialPicture = new Picture(
 				FileChooser.pickAFile(FileChooser.OPEN));
 		initialPicture.explore();
-		Picture mine = initialPicture.flip(Picture.HORIZONTAL);
 	}
 
 } // End of Picture class
