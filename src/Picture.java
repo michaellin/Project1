@@ -704,18 +704,11 @@ public class Picture extends SimplePicture
 		else if(axis == Picture.FORWARD_DIAGONAL){
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					/*int xCoord = -(w - this.getWidth()/2);
-					int yCoord = -(this.getHeight()/2 - h - 1);
-					int xConv = yCoord + this.getWidth()/2 - 1;
-					int yConv = xCoord+this.getHeight()/2 - 1;
-					System.out.println(h + " " + yCoord + " " + xConv + " " + yConv + " " + newPic.getWidth() + " " + newPic.getHeight());
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(xConv, yConv);
-					toChange.setColor(toSet);*/
+					
 					int xCoord = w;
 					int yCoord = this.getHeight() - h - 1;
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(yCoord, xCoord);
+					Pixel toChange = newPic.getPixel(yCoord, newPic.getHeight() - xCoord - 1);
 					toChange.setColor(toSet);
 					
 				}
@@ -725,14 +718,7 @@ public class Picture extends SimplePicture
 			
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					/*int xCoord = (w - this.getWidth()/2);
-					int yCoord = (this.getHeight()/2 - h -1);
-					int xConv = yCoord + this.getWidth()/2 - 1;
-					int yConv = xCoord+this.getHeight()/2 - 1;
-					System.out.println(xConv + " " + yConv + " " + newPic.getWidth() + " " + newPic.getHeight());
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(xConv, yConv);
-					toChange.setColor(toSet);*/
+				
 					int xCoord = w;
 					int yCoord = h;
 					Color toSet = this.getPixel(w, h).getColor();
