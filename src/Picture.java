@@ -828,9 +828,40 @@ public class Picture extends SimplePicture
 	 * 	partially copied to the final Picture. 
 	 */
 	public Picture convertToAscii() {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
-		return new Picture(this);
+		Picture analyzePic = this.grayscale();
+		Picture newPic = new Picture(this.getWidth(), this.getHeight());
+		for (int w = 0 ; w < this.getWidth() ; w += 10) {
+			for (int h = 0 ; h < this.getHeight() ; h += 20) {
+				int average = accumChunkColor(w, h, analyzePic);
+				replaceWithAscii(w, h, newPic, getAsciiPic(average)); 
+			}
+		}
+		return newPic;
 	}
+
+	private int accumChunkColor (int initX, int initY, Picture pic) {
+		int average = 0;
+		int accumWidth = 0;
+		int accumHeight = 0;
+		for (int w = initX ; w < (initX + 10) && w < pic.getWidth() ; w++, accumWidth++) {
+			accumHeight = 0;
+			for (int h = initY ; h < (initY + 20) && h < pic.getHeight() ; h++, accumHeight++) {
+				average += pic.getPixel(w, h).getAverage();
+			}
+		}
+		return average/(accumWidth * accumHeight);
+	}
+
+	private void replaceWithAscii (int initX, int initY, 
+										Picture pic, Picture replace) {
+		for (int w = initX ; w < (initX + 10) && w < pic.getWidth() ; w++) {
+			for (int h = initY ; h < (initY + 20) && h < pic.getHeight() ; h++) {
+				Color toSet = replace.getPixel(w - initX, h - initY).getColor();				
+				pic.getPixel(w, h).setColor(toSet);
+			}
+		}
+	}
+
 
 	/**
 	 * Blurs this Picture. To achieve this, the algorithm takes a pixel, and
