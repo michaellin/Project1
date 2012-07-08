@@ -731,17 +731,17 @@ public class Picture extends SimplePicture
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
-		for (int h = 0 ; h < height ; h++) {
-			for (int w = 0 ; w < width ; w++) {
+		for (int h = 1 ; h < height - 1 ; h++) {
+			for (int w = 1 ; w < width - 1 ; w++) {
 				double norDis = 0;
 				double leftDis = 0;
 				if (h != 0) { 
 					norDis = colorDistance(this.getPixel(w, h),
 												this.getPixel(w, h + 1));
-					if (w != 0) {
-						leftDis = colorDistance(this.getPixel(w, h),
-													this.getPixel(w - 1, h));
-					}
+				}
+				if (w != 0) {
+					leftDis = colorDistance(this.getPixel(w, h),
+												this.getPixel(w - 1, h));
 				}
 				Pixel thePix = newPic.getPixel(w, h);
 				thePix.setAlpha(255);
