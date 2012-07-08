@@ -671,7 +671,7 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture flipped about the axis provided.
 	 */
-	public Picture flip (int axis) {
+	public Picture flip(int axis) {
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		if(axis == Picture.HORIZONTAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -680,9 +680,7 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(w, this.getHeight() - h);
 					toChange.setColor(toSet);
 				}
-			}
-			return newPic;
-			
+			}			
 		}
 		else if(axis == Picture.VERTICAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -691,8 +689,7 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(this.getWidth()-w, h);
 					toChange.setColor(toSet);
 				}
-			}
-			return newPic;		
+			}	
 		}
 		else if(axis == Picture.FORWARD_DIAGONAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -715,9 +712,8 @@ public class Picture extends SimplePicture
 					toChange.setColor(toSet);
 				}
 			}
-		}else{
-			throw new IllegalArgumentException("invalid argument given");
 		}
+		return newPic;
 	}
 
 	/**
@@ -923,6 +919,7 @@ public class Picture extends SimplePicture
 		Picture initialPicture = new Picture(
 				FileChooser.pickAFile(FileChooser.OPEN));
 		initialPicture.explore();
+		//Picture mine = initialPicture.flip(Picture.HORIZONTAL);
 	}
 
 } // End of Picture class
