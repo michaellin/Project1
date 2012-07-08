@@ -671,7 +671,7 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture flipped about the axis provided.
 	 */
-	public Picture flip (int axis) {
+	public Picture flip(int axis) {
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		if(axis == Picture.HORIZONTAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -680,9 +680,7 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(w, this.getHeight() - h);
 					toChange.setColor(toSet);
 				}
-			}
-			return newPic;
-			
+			}			
 		}
 		else if(axis == Picture.VERTICAL){
 			for(int w = 0; w < this.getWidth(); w++){
@@ -691,23 +689,31 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(this.getWidth()-w, h);
 					toChange.setColor(toSet);
 				}
-			}
-			return newPic;		
+			}	
 		}
 		else if(axis == Picture.FORWARD_DIAGONAL){
-			for(int w = this.getWidth(); w > 0; w--){
+			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					Color toSet = this.getPixel(h, w).getColor();
-					Pixel toChange = newPic.getPixel(w, h);
+					int xCoord = w - newPic.getWidth()/2;
+					int yCoord = h - newPic.getWidth()/2;
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(yCoord + newPic.getWidth()/2, xCoord + newPic.getHeight()/2);
 					toChange.setColor(toSet);
 				}
 			}
 			
 		}else if(axis == Picture.BACKWARD_DIAGONAL){
-			
-		}else{
-			throw new IllegalArgumentException("invalid argument given");
+			for(int w = 0; w < this.getWidth(); w++){
+				for(int h = 0; h < this.getHeight(); h++){
+					int xCoord = w - newPic.getWidth()/2;
+					int yCoord = h - newPic.getWidth()/2;
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(-(yCoord + newPic.getWidth()/2), -(xCoord + newPic.getHeight()/2));
+					toChange.setColor(toSet);
+				}
+			}
 		}
+		return newPic;
 	}
 
 	/**
@@ -928,6 +934,7 @@ public class Picture extends SimplePicture
 		Picture initialPicture = new Picture(
 				FileChooser.pickAFile(FileChooser.OPEN));
 		initialPicture.explore();
+		//Picture mine = initialPicture.flip(Picture.HORIZONTAL);
 	}
 
 } // End of Picture class
