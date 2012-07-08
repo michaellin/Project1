@@ -872,8 +872,44 @@ public class Picture extends SimplePicture
 	 *         a blurring square of size (2 * threshold) + 1.
 	 */
 	public Picture blur(int blurThreshold) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
-		return new Picture(this);
+		int width = this.getWidth();
+		int height = this.getHeight();
+		Picture newPic = new Picture(width, height);
+		for (int w = 0 ; w < width ; w++) {
+			for (int h = 0 ; h < height ; w++) {
+				int[] toSets = averagePatch(w, h, blurThreshold);
+				newPic.getPixel(w, h).setRed(toSets[0]);
+				newPic.getPixel(w, h).setBlue(toSets[1]);
+				newPic.getPixel(w, h).setGreen(toSets[2]);
+				newPic.getPixel(w, h).setAlpha(toSets[3]);
+			}
+		}
+		return newPic;
+	}
+
+	public int[] averagePatch(int width, int height, int range) {
+		int reds = 0;
+		int blues = 0;
+		int greens = 0;
+		int alphas = 0;
+		int totPixels = (int) Math.pow(range + 1, 2);
+		for (int w = width - range ; w < width + range ; w++) {
+			for (int h = height - range ; w < height + range ; h++) {
+				if (w < 0 || h < 0 || w >= this.getWidth() || h >=
+													this.getHeight()) {
+					totPixels --;
+					continue;
+				}
+				Pixel thePix = this.getPixel(w, h);
+				reds += thePix.getRed();
+				blues += thePix.getBlue();
+				greens += thePix.getGreen();
+				alphas += thePix.getAlpha();
+			}
+		}
+		int[] results = {reds / totPixels, blues / totPixels, greens /
+											totPixels, alphas / totPixels};
+		return results;
 	}
 
 	/**
