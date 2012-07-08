@@ -406,7 +406,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				bluePicture.addBluePixel(h, w, amount);
+				bluePicture.addBluePixel(w, h, amount);
 			}
 		}
 		return bluePicture;
@@ -463,7 +463,7 @@ public class Picture extends SimplePicture
 		int picWidth = this.getWidth();
 			for(int h = 0; h < picHeight ; h++) {
 				for (int w = 0 ; w < picWidth ; w++) {
-					redPicture.addRedPixel(h, w, amount);
+					redPicture.addRedPixel(w, h, amount);
 				}
 			}
 			return redPicture;
@@ -519,7 +519,7 @@ public class Picture extends SimplePicture
 
 		for(int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				greenPicture.addGreenPixel(h, w, amount);
+				greenPicture.addGreenPixel(w, h, amount);
 			}
 		}
 		return greenPicture;
