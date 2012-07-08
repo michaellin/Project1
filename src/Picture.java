@@ -695,16 +695,26 @@ public class Picture extends SimplePicture
 			return newPic;		
 		}
 		else if(axis == Picture.FORWARD_DIAGONAL){
-			for(int w = this.getWidth(); w > 0; w--){
+			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
-					Color toSet = this.getPixel(h, w).getColor();
-					Pixel toChange = newPic.getPixel(w, h);
+					int xCoord = w - newPic.getWidth()/2;
+					int yCoord = h - newPic.getWidth()/2;
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(yCoord + newPic.getWidth()/2, xCoord + newPic.getHeight()/2);
 					toChange.setColor(toSet);
 				}
 			}
 			
 		}else if(axis == Picture.BACKWARD_DIAGONAL){
-			
+			for(int w = 0; w < this.getWidth(); w++){
+				for(int h = 0; h < this.getHeight(); h++){
+					int xCoord = w - newPic.getWidth()/2;
+					int yCoord = h - newPic.getWidth()/2;
+					Color toSet = this.getPixel(w, h).getColor();
+					Pixel toChange = newPic.getPixel(-(yCoord + newPic.getWidth()/2), -(xCoord + newPic.getHeight()/2));
+					toChange.setColor(toSet);
+				}
+			}
 		}else{
 			throw new IllegalArgumentException("invalid argument given");
 		}
