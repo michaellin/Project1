@@ -684,9 +684,9 @@ public class Picture extends SimplePicture
 		}
 		else if(axis == Picture.VERTICAL){
 			for(int w = 0; w < this.getWidth(); w++){
-				for(int h = 0; h< this.getHeight(); h++){
+				for(int h = 0; h < this.getHeight(); h++){
 					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getWidth()-w, h);
+					Pixel toChange = newPic.getPixel(this.getWidth() - w, h);
 					toChange.setColor(toSet);
 				}
 			}	
@@ -733,20 +733,20 @@ public class Picture extends SimplePicture
 	 *         (with an alpha of 255). The pixel at (0, 0) will always be set to
 	 *         white.
 	 */
-	public Picture showEdges(int threshold) {
+	public Picture showEdges(double threshold) {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
-		for (int h = 1 ; h < height - 1 ; h++) {
-			for (int w = 1 ; w < width - 1 ; w++) {
-				double norDis = 0;
-				double leftDis = 0;
+		for (int h = 0 ; h < height ; h++) {
+			for (int w = 0 ; w < width ; w++) {
+				int norDis = 0;
+				int leftDis = 0;
 				if (h != 0) { 
-					norDis = colorDistance(this.getPixel(w, h),
-												this.getPixel(w, h + 1));
+					norDis = (int) colorDistance(this.getPixel(w, h),
+												this.getPixel(w, h - 1));
 				}
 				if (w != 0) {
-					leftDis = colorDistance(this.getPixel(w, h),
+					leftDis = (int) colorDistance(this.getPixel(w, h),
 												this.getPixel(w - 1, h));
 				}
 				Pixel thePix = newPic.getPixel(w, h);
