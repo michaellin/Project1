@@ -174,36 +174,43 @@ public class Picture extends SimplePicture
 	{
 		if (!Picture.setPixelToGrayWorks())
 		{
+			System.out.println("It was 1");
 			return false;
 		}
 
 		if (!Picture.negateWorks())
 		{
+			System.out.println("It was 2");
 			return false;
 		}
 
 		if (!Picture.lightenWorks())
-		{
+		{			
+			System.out.println("It was 3");
 			return false;
 		}
 
 		if (!Picture.darkenWorks())
 		{
+			System.out.println("It was 4");
 			return false;
 		}
 
 		if (!Picture.addRedWorks())
 		{
+			System.out.println("It was 5");
 			return false;
 		}
 		
 		if (!Picture.addGreenWorks())
 		{
+			System.out.println("It was 6");
 			return false;
 		}
 
 		if (!Picture.addBlueWorks())
 		{
+			System.out.println("It was 7");
 			return false;
 		}
 
@@ -314,17 +321,21 @@ public class Picture extends SimplePicture
 	private static boolean lightenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
 		bg.lighten(40);
 		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) correctPixel.getRed() - 40;
-		int goalGreen        = (int) correctPixel.getGreen() - 40;
-		int goalBlue         = (int) correctPixel.getBlue() - 40;
+		int goalRed          = (int) correctPixel.getRed() + 40;
+		int goalGreen        = (int) correctPixel.getGreen() + 40;
+		int goalBlue         = (int) correctPixel.getBlue() + 40;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
 		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		System.out.println(redCorrect);
+		System.out.println(blueCorrect);
+		System.out.println(greenCorrect);
+		System.out.println(alphaCorrect);
 		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
 	}
 
@@ -921,8 +932,22 @@ public class Picture extends SimplePicture
 	 * 	the new color provided. 
 	 */
 	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
-		return new Picture(this);
+		int width = this.getWidth();
+		int height = this.getHeight();
+		Picture newPic = new Picture(width, height);
+		Pixel comparePix = this.getPixel(x, y);
+		for (int h = 0 ; h < height ; h++) {
+			for (int w = 0 ; w < width ; w++) {
+				int dist = (int) colorDistance(comparePix, this.getPixel(w, h));
+				if (dist <= threshold) {
+					newPic.getPixel(w, h).setColor(newColor);
+				} else {
+					newPic.getPixel(w, h).setColor(
+											this.getPixel(w, h).getColor());
+				}
+			}
+		}
+		return newPic;
 	}
 
 	///////////////////////// PROJECT 1 ENDS HERE /////////////////////////////
