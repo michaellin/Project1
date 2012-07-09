@@ -923,12 +923,53 @@ public class Picture extends SimplePicture
 	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
 		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
 		Picture newPic = new Picture(this);
-		for(int i = x-1; i < x+2; i++){
-			for(int j = y-1; j < y+2; j++){
-				if(this.colorDistance(this.getPixel(x, y), this.getPixel(i, j))<=threshold && (i!=x || j !=y)){
-					System.out.println(" i and j " + i + " " + j);
-					Pixel toChange = newPic.getPixel(i,j);
-					toChange.setColor(newColor);
+		Pixel reference = this.getPixel(x,y);
+		for(int a = x; a< this.getWidth(); a++){
+			for(int b = y; b< this.getHeight(); b++){
+				for(int i = x-1; i < x+2; i++){
+					for(int j = y-1; j < y+2; j++){
+						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
+							Pixel toChange = newPic.getPixel(i,j);
+							toChange.setColor(newColor);
+						}
+					}
+				}
+			}
+		}
+		
+		for(int a = x; a< this.getWidth(); a++){
+			for(int b = y; b< this.getHeight(); b--){
+				for(int i = x-1; i < x+2; i++){
+					for(int j = y-1; j < y+2; j++){
+						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
+							Pixel toChange = newPic.getPixel(i,j);
+							toChange.setColor(newColor);
+						}
+					}
+				}
+			}
+		}
+		for(int a = x; a< this.getWidth(); a--){
+			for(int b = y; b< this.getHeight(); b--){
+				for(int i = x-1; i < x+2; i++){
+					for(int j = y-1; j < y+2; j++){
+						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
+							Pixel toChange = newPic.getPixel(i,j);
+							toChange.setColor(newColor);
+						}
+					}
+				}
+			}
+		}
+		for(int a = x; a< this.getWidth(); a--){
+			for(int b = y; b< this.getHeight(); b++){
+				for(int i = x-1; i < x+2; i++){
+					for(int j = y-1; j < y+2; j++){
+						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
+							Pixel toChange = newPic.getPixel(i,j);
+							toChange.setColor(newColor);
+						}
+					}
 				}
 			}
 		}
@@ -1026,6 +1067,7 @@ public class Picture extends SimplePicture
 		Picture initialPicture = new Picture(
 				FileChooser.pickAFile(FileChooser.OPEN));
 		initialPicture.explore();
+		
 	}
 
 } // End of Picture class
