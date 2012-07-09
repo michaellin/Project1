@@ -174,43 +174,36 @@ public class Picture extends SimplePicture
 	{
 		if (!Picture.setPixelToGrayWorks())
 		{
-			System.out.println("It was 1");
 			return false;
 		}
 
 		if (!Picture.negateWorks())
 		{
-			System.out.println("It was 2");
 			return false;
 		}
 
 		if (!Picture.lightenWorks())
-		{			
-			System.out.println("It was 3");
+		{
 			return false;
 		}
 
 		if (!Picture.darkenWorks())
 		{
-			System.out.println("It was 4");
 			return false;
 		}
 
 		if (!Picture.addRedWorks())
 		{
-			System.out.println("It was 5");
 			return false;
 		}
 		
 		if (!Picture.addGreenWorks())
 		{
-			System.out.println("It was 6");
 			return false;
 		}
 
 		if (!Picture.addBlueWorks())
 		{
-			System.out.println("It was 7");
 			return false;
 		}
 
@@ -323,19 +316,15 @@ public class Picture extends SimplePicture
 		Picture bg           = Picture.loadPicture("Creek.bmp");
 		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.lighten(40);
-		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) correctPixel.getRed() + 40;
-		int goalGreen        = (int) correctPixel.getGreen() + 40;
-		int goalBlue         = (int) correctPixel.getBlue() + 40;
+		Picture newPic = bg.lighten(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed() + 100;
+		int goalGreen        = (int) correctPixel.getGreen() + 100;
+		int goalBlue         = (int) correctPixel.getBlue() + 100;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
 		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
-		System.out.println(redCorrect);
-		System.out.println(blueCorrect);
-		System.out.println(greenCorrect);
-		System.out.println(alphaCorrect);
 		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
 	}
 
@@ -389,11 +378,11 @@ public class Picture extends SimplePicture
 		Picture bg           = Picture.loadPicture("Creek.bmp");
 		Pixel correctPixel      = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.darken(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) correctPixel.getRed() + 100;
-		int goalGreen        = (int) correctPixel.getGreen() + 100;
-		int goalBlue         = (int) correctPixel.getBlue() + 100;
+		Picture newPic = bg.darken(40);
+		Pixel testPixel      = newPic.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed() - 40;
+		int goalGreen        = (int) correctPixel.getGreen() - 40;
+		int goalBlue         = (int) correctPixel.getBlue() - 40;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
@@ -444,10 +433,10 @@ public class Picture extends SimplePicture
 	private static boolean addBlueWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addBlue(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addBlue(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed();
 		int goalGreen        = (int) correctPixel.getGreen();
 		int goalBlue         = (int) correctPixel.getBlue() + 100;
@@ -501,10 +490,10 @@ public class Picture extends SimplePicture
 	private static boolean addRedWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addRed(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addRed(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed() + 100;
 		int goalGreen        = (int) correctPixel.getGreen();
 		int goalBlue         = (int) correctPixel.getBlue();
@@ -557,10 +546,10 @@ public class Picture extends SimplePicture
 	private static boolean addGreenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addGreen(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addGreen(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed();
 		int goalGreen        = (int) correctPixel.getGreen() + 100;
 		int goalBlue         = (int) correctPixel.getBlue();
