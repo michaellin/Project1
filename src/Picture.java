@@ -873,7 +873,7 @@ public class Picture extends SimplePicture
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
 		for (int w = 0 ; w < width ; w++) {
-			for (int h = 0 ; h < height ; w++) {
+			for (int h = 0 ; h < height ; h++) {
 				int[] toSets = averagePatch(w, h, blurThreshold);
 				newPic.getPixel(w, h).setRed(toSets[0]);
 				newPic.getPixel(w, h).setBlue(toSets[1]);
@@ -889,15 +889,15 @@ public class Picture extends SimplePicture
 		int blues = 0;
 		int greens = 0;
 		int alphas = 0;
-		int totPixels = (int) Math.pow(range + 1, 2);
-		for (int w = width - range ; w < width + range ; w++) {
-			for (int h = height - range ; w < height + range ; h++) {
-				if (w < 0 || h < 0 || w >= this.getWidth() || h >=
+		int totPixels = 0;
+		for (int x = width - range ; x <= width + range ; x++) {
+			for (int y = height - range ; y <= height + range ; y++) {
+				if (x < 0 || y < 0 || x >= this.getWidth() || y >=
 													this.getHeight()) {
-					totPixels --;
 					continue;
 				}
-				Pixel thePix = this.getPixel(w, h);
+				totPixels ++;
+				Pixel thePix = this.getPixel(x, y);
 				reds += thePix.getRed();
 				blues += thePix.getBlue();
 				greens += thePix.getGreen();
