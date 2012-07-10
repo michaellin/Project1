@@ -947,7 +947,21 @@ public class Picture extends SimplePicture
 				}
 			}
 		}
-		for(int t = 0; t < 15; t++){
+		for(int t = 0; t < 1; t++){
+			for (int i = x; i >= 0; i--){
+				for(int j = y; j >= 0; j--){
+					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
+						newPic.getPixel(i,j).setColor(newColor);
+						for(int a = i-1; a < i+2; a++){
+							for(int b = j-1; b< j+2; b++){
+								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+									pixels[a][b] = true;
+								}
+							}
+						}
+					}
+				}
+			}
 			for (int i = x; i < this.getWidth(); i++){
 				for(int j = y; j < this.getHeight(); j++){
 					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
@@ -991,20 +1005,7 @@ public class Picture extends SimplePicture
 					}
 				}
 			}
-			for (int i = x; i >= 0; i--){
-				for(int j = y; j >= 0; j--){
-					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
-						newPic.getPixel(i,j).setColor(newColor);
-						for(int a = i-1; a < i+2; a++){
-							for(int b = j-1; b< j+2; b++){
-								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-									pixels[a][b] = true;
-								}
-							}
-						}
-					}
-				}
-			}
+			
 			
 		}
 		
@@ -1025,31 +1026,20 @@ public class Picture extends SimplePicture
 			if (colorDistance(testPix, comparePix) <= threshold) {
 				testPix.setColor(newColor);
 				if (yCoor < height - 1) {
-				queue.add(newPic.getPixel(xCoor,
-											yCoor + 1));
-				}
-				if (xCoor < width - 1) {
-				queue.add(newPic.getPixel(xCoor + 1,
-											yCoor));
-				}
-				if (xCoor > 0) {
-				queue.add(newPic.getPixel(xCoor - 1,
-											yCoor));
-				}
-				if (yCoor > 0) {
-				queue.add(newPic.getPixel(xCoor,
-											yCoor - 1));
-				}
-				if (yCoor < height - 1 && xCoor < width - 1) {
+				queue.add(newPic.getPixel(xCoor,yCoor + 1));
+				}if (xCoor < width - 1) {
+				queue.add(newPic.getPixel(xCoor + 1, yCoor));
+				}if (xCoor > 0) {
+				queue.add(newPic.getPixel(xCoor - 1, yCoor));
+				}if (yCoor > 0) {
+				queue.add(newPic.getPixel(xCoor, yCoor - 1));
+				}if (yCoor < height - 1 && xCoor < width - 1) {
 					queue.add(newPic.getPixel(xCoor + 1, yCoor + 1));
-				}
-				if (yCoor < height - 1 && xCoor > 0) {
+				}if (yCoor < height - 1 && xCoor > 0) {
 					queue.add(newPic.getPixel(xCoor - 1, yCoor + 1));
-				}
-				if (yCoor > 0 && xCoor < width - 1) {
+				}if (yCoor > 0 && xCoor < width - 1) {
 					queue.add(newPic.getPixel(xCoor + 1, yCoor - 1));
-				}
-				if (xCoor > 0 && yCoor > 0) {
+				}if (xCoor > 0 && yCoor > 0) {
 					queue.add(newPic.getPixel(xCoor - 1, yCoor - 1));
 				}
 			}
