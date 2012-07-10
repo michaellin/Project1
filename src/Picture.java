@@ -701,7 +701,6 @@ public class Picture extends SimplePicture
 				}
 			}	
 		}
-		
 		else if(axis == Picture.FORWARD_DIAGONAL){
 			for(int w = 0; w < this.getWidth(); w++){
 				for(int h = 0; h < this.getHeight(); h++){
@@ -713,8 +712,7 @@ public class Picture extends SimplePicture
 					toChange.setColor(toSet);
 					
 				}
-			}
-			
+			}	
 		}else if(axis == Picture.BACKWARD_DIAGONAL){
 			
 			for(int w = 0; w < this.getWidth(); w++){
@@ -726,8 +724,7 @@ public class Picture extends SimplePicture
 					Pixel toChange = newPic.getPixel(yCoord, xCoord);
 					toChange.setColor(toSet);
 				}
-			}
-			
+			}	
 		}
 		return newPic;
 	}
@@ -815,10 +812,6 @@ public class Picture extends SimplePicture
 	 * 	partially copied to the final Picture. 
 	 */
 	
-	
-	
-	
-	
 	public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
@@ -831,6 +824,14 @@ public class Picture extends SimplePicture
 		return newPic;
 	}
 
+	/**
+	 * Helper method that accumulates the colors in a chunk of 10 by 20 pixels
+	 * and returns the average value.
+	 * @param initX
+	 * @param initY
+	 * @param pic
+	 * @return int of average value
+	 */
 	private int accumChunkColor (int initX, int initY, Picture pic) {
 		int average = 0;
 		int accumWidth = 0;
@@ -844,6 +845,13 @@ public class Picture extends SimplePicture
 		return average/(accumWidth * accumHeight);
 	}
 
+	/**
+	 * Helper method to replace a chunk of a Picture with a replacement picture.
+	 * @param initX
+	 * @param initY
+	 * @param pic
+	 * @param replace
+	 */
 	private void replaceWithAscii (int initX, int initY, 
 										Picture pic, Picture replace) {
 		for (int w = initX ; w < (initX + 10) && w < pic.getWidth() ; w++) {
@@ -853,9 +861,6 @@ public class Picture extends SimplePicture
 			}
 		}
 	}
-	
-	
-	
 
 
 	/**
@@ -883,17 +888,22 @@ public class Picture extends SimplePicture
 		Picture newPic = new Picture(width, height);
 		for (int w = 0 ; w < width ; w++) {
 			for (int h = 0 ; h < height ; h++) {
-				int[] toSets = averagePatch(w, h, blurThreshold);
-				newPic.getPixel(w, h).setRed(toSets[0]);
-				newPic.getPixel(w, h).setBlue(toSets[1]);
-				newPic.getPixel(w, h).setGreen(toSets[2]);
-				newPic.getPixel(w, h).setAlpha(toSets[3]);
+				Color  newColor = averagePatch(w, h, blurThreshold);
+				newPic.getPixel(w, h).setColor(newColor);
 			}
 		}
 		return newPic;
 	}
 
-	public int[] averagePatch(int width, int height, int range) {
+	/**
+	 * Helper method that calculates the average Color of a patch of
+	 * pixels within the range of the current pixel.
+	 * @param width
+	 * @param height
+	 * @param range
+	 * @return Color average color
+	 */
+	public Color averagePatch(int width, int height, int range) {
 		int reds = 0;
 		int blues = 0;
 		int greens = 0;
@@ -913,11 +923,30 @@ public class Picture extends SimplePicture
 				alphas += thePix.getAlpha();
 			}
 		}
-		int[] results = {reds / totPixels, blues / totPixels, greens /
-											totPixels, alphas / totPixels};
-		return results;
+		return new Color(reds / totPixels, greens / totPixels, blues /
+											totPixels, alphas / totPixels);
 	}
 
+	
+	/**
+	 * Test method for setPixelToGray. This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean averagePatchWorks()
+	{
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Pixel testPixel     = bg.getPixel(10, 10);
+		bg.setPixelToGray(10, 10);
+		int goalColor        = (int) testPixel.getAverage();
+		int originalAlpha    = testPixel.getColor().getAlpha();
+		boolean redCorrect   = testPixel.getRed() == goalColor;
+		boolean greenCorrect = testPixel.getGreen() == goalColor; 
+		boolean blueCorrect  = testPixel.getBlue() == goalColor;
+		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
+		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+	}
+	
+	
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
 	 * @param y y-coordinate of the pixel currently selected.
@@ -929,87 +958,6 @@ public class Picture extends SimplePicture
 	 * 	provided threshold (in terms of color distance), are colored with
 	 * 	the new color provided. 
 	 */
-
-	
-	/*public Picture paintBucket(int x, int y, int threshold, Color newColor) {
-		Boolean[][] pixels = new Boolean[this.getWidth()][this.getHeight()];
-		Picture newPic = new Picture(this);
-		Pixel compareTo = this.getPixel(x,y);
-		for(int w = 0; w < this.getWidth(); w++){
-			for(int h = 0; h< this.getHeight(); h++){
-				pixels[w][h] = false;
-			}
-		}
-		for(int a = x - 1; a < x+2; a++){
-			for(int b = y-1; b< y+2; b++){
-				if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-					pixels[a][b] = true;
-				}
-			}
-		}
-		for(int t = 0; t < 15; t++){
-			for (int i = x; i < this.getWidth(); i++){
-				for(int j = y; j < this.getHeight(); j++){
-					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
-						newPic.getPixel(i,j).setColor(newColor);
-						for(int a = i-1; a < i+2; a++){
-							for(int b = j-1; b< j+2; b++){
-								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-									pixels[a][b] = true;
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			for (int i = x; i >= 0; i--){
-				for(int j = y; j < this.getHeight(); j++){
-					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
-						newPic.getPixel(i,j).setColor(newColor);
-						for(int a = i-1; a < i+2; a++){
-							for(int b = j-1; b< j+2; b++){
-								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-									pixels[a][b] = true;
-								}
-							}
-						}
-					}
-				}
-			}
-			for (int i = x; i < this.getWidth(); i++){
-				for(int j = y; j >= 0; j--){
-					if(this.colorDistance(compareTo, this.getPixel(i,j))<=threshold && pixels[i][j]){
-						newPic.getPixel(i,j).setColor(newColor);
-						for(int a = i-1; a < i+2; a++){
-							for(int b = j-1; b< j+2; b++){
-								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-									pixels[a][b] = true;
-								}
-							}
-						}
-					}
-				}
-			}
-			for (int i = x; i >= 0; i--){
-				for(int j = y; j >= 0; j--){
-					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
-						newPic.getPixel(i,j).setColor(newColor);
-						for(int a = i-1; a < i+2; a++){
-							for(int b = j-1; b< j+2; b++){
-								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
-									pixels[a][b] = true;
-								}
-							}
-						}
-					}
-				}
-			}
-			
-		}
-		
-		return newPic;
-	}*/
 	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
 		Picture newPic = new Picture(this);
 		int width = this.getWidth();

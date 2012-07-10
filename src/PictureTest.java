@@ -2,6 +2,9 @@ package src;
 import java.awt.Color;
 
 import junit.framework.TestCase;
+import java.lang.Long;
+import java.util.Calendar;
+import java.util.LinkedList;
 import static org.junit.Assert.*;
 
 /*
@@ -274,7 +277,16 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/**
-	 * Helper method for loading a picture in the current directory.
-	 */
+	
+	public LinkedList<Long> getRunTime() {
+		LinkedList<Long> times = new LinkedList<Long>();
+		for (int n = 1 ; n < 7 ; n++) {
+			Picture pic1 = Picture.loadPicture("creek" + n + "00.bmp");
+			long start = System.currentTimeMillis();
+			pic1.blur(5);
+			long end = System.currentTimeMillis();
+			times.add(new Long(start - end));
+		}
+		return times;
+	}
 }
