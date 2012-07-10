@@ -818,7 +818,7 @@ public class Picture extends SimplePicture
 	
 	
 	
-	/*public Picture convertToAscii() {
+	public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		for (int w = 0 ; w < this.getWidth() ; w += 10) {
@@ -852,7 +852,7 @@ public class Picture extends SimplePicture
 			}
 		}
 	}
-	*/
+	
 	
 	
 
@@ -928,7 +928,8 @@ public class Picture extends SimplePicture
 	 * 	provided threshold (in terms of color distance), are colored with
 	 * 	the new color provided. 
 	 */
-	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
+	
+	/*public Picture paintBucket(int x, int y, int threshold, Color newColor) {
 		Boolean[][] pixels = new Boolean[this.getWidth()][this.getHeight()];
 		Picture newPic = new Picture(this);
 		Pixel compareTo = this.getPixel(x,y);
@@ -1006,7 +1007,7 @@ public class Picture extends SimplePicture
 		}
 		
 		return newPic;
-	}
+	}*/
 
 	///////////////////////// PROJECT 1 ENDS HERE /////////////////////////////
 
