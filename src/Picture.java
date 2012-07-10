@@ -314,13 +314,13 @@ public class Picture extends SimplePicture
 	private static boolean lightenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.lighten(40);
-		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) correctPixel.getRed() - 40;
-		int goalGreen        = (int) correctPixel.getGreen() - 40;
-		int goalBlue         = (int) correctPixel.getBlue() - 40;
+		Picture newPic = bg.lighten(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed() + 100;
+		int goalGreen        = (int) correctPixel.getGreen() + 100;
+		int goalBlue         = (int) correctPixel.getBlue() + 100;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
@@ -378,11 +378,11 @@ public class Picture extends SimplePicture
 		Picture bg           = Picture.loadPicture("Creek.bmp");
 		Pixel correctPixel      = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.darken(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
-		int goalRed          = (int) correctPixel.getRed() + 100;
-		int goalGreen        = (int) correctPixel.getGreen() + 100;
-		int goalBlue         = (int) correctPixel.getBlue() + 100;
+		Picture newPic = bg.darken(40);
+		Pixel testPixel      = newPic.getPixel(10, 10);
+		int goalRed          = (int) correctPixel.getRed() - 40;
+		int goalGreen        = (int) correctPixel.getGreen() - 40;
+		int goalBlue         = (int) correctPixel.getBlue() - 40;
 		boolean redCorrect   = testPixel.getRed() == goalRed;
 		boolean greenCorrect = testPixel.getGreen() == goalGreen; 
 		boolean blueCorrect  = testPixel.getBlue() == goalBlue;
@@ -433,10 +433,10 @@ public class Picture extends SimplePicture
 	private static boolean addBlueWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addBlue(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addBlue(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed();
 		int goalGreen        = (int) correctPixel.getGreen();
 		int goalBlue         = (int) correctPixel.getBlue() + 100;
@@ -490,10 +490,10 @@ public class Picture extends SimplePicture
 	private static boolean addRedWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addRed(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addRed(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed() + 100;
 		int goalGreen        = (int) correctPixel.getGreen();
 		int goalBlue         = (int) correctPixel.getBlue();
@@ -546,10 +546,10 @@ public class Picture extends SimplePicture
 	private static boolean addGreenWorks()
 	{
 		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel correctPixel      = bg.getPixel(10, 10);
+		Pixel correctPixel   = bg.getPixel(10, 10);
 		int originalAlpha    = correctPixel.getColor().getAlpha();
-		bg.addGreen(100);
-		Pixel testPixel      = bg.getPixel(10, 10);
+		Picture newPic       = bg.addGreen(100);
+		Pixel testPixel      = newPic.getPixel(10, 10);
 		int goalRed          = (int) correctPixel.getRed();
 		int goalGreen        = (int) correctPixel.getGreen() + 100;
 		int goalBlue         = (int) correctPixel.getBlue();
@@ -813,7 +813,12 @@ public class Picture extends SimplePicture
 	 * 	as the original Picture; this might involve characters being
 	 * 	partially copied to the final Picture. 
 	 */
-	public Picture convertToAscii() {
+	
+	
+	
+	
+	
+	/*public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		for (int w = 0 ; w < this.getWidth() ; w += 10) {
@@ -847,6 +852,9 @@ public class Picture extends SimplePicture
 			}
 		}
 	}
+	*/
+	
+	
 
 
 	/**
@@ -921,58 +929,82 @@ public class Picture extends SimplePicture
 	 * 	the new color provided. 
 	 */
 	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
-		/* REPLACE THE CODE BELOW WITH YOUR OWN. */
+		Boolean[][] pixels = new Boolean[this.getWidth()][this.getHeight()];
 		Picture newPic = new Picture(this);
-		Pixel reference = this.getPixel(x,y);
-		for(int a = x; a< this.getWidth(); a++){
-			for(int b = y; b< this.getHeight(); b++){
-				for(int i = x-1; i < x+2; i++){
-					for(int j = y-1; j < y+2; j++){
-						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
-							Pixel toChange = newPic.getPixel(i,j);
-							toChange.setColor(newColor);
+		Pixel compareTo = this.getPixel(x,y);
+		for(int w = 0; w < this.getWidth(); w++){
+			for(int h = 0; h< this.getHeight(); h++){
+				pixels[w][h] = false;
+			}
+		}
+		for(int a = x - 1; a < x+2; a++){
+			for(int b = y-1; b< y+2; b++){
+				if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+					pixels[a][b] = true;
+				}
+			}
+		}
+		for(int t = 0; t < 15; t++){
+			for (int i = x; i < this.getWidth(); i++){
+				for(int j = y; j < this.getHeight(); j++){
+					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
+						newPic.getPixel(i,j).setColor(newColor);
+						for(int a = i-1; a < i+2; a++){
+							for(int b = j-1; b< j+2; b++){
+								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+									pixels[a][b] = true;
+								}
+							}
 						}
 					}
 				}
 			}
+			
+			for (int i = x; i >= 0; i--){
+				for(int j = y; j < this.getHeight(); j++){
+					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
+						newPic.getPixel(i,j).setColor(newColor);
+						for(int a = i-1; a < i+2; a++){
+							for(int b = j-1; b< j+2; b++){
+								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+									pixels[a][b] = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			for (int i = x; i < this.getWidth(); i++){
+				for(int j = y; j >= 0; j--){
+					if(this.colorDistance(compareTo, this.getPixel(i,j))<=threshold && pixels[i][j]){
+						newPic.getPixel(i,j).setColor(newColor);
+						for(int a = i-1; a < i+2; a++){
+							for(int b = j-1; b< j+2; b++){
+								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+									pixels[a][b] = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			for (int i = x; i >= 0; i--){
+				for(int j = y; j >= 0; j--){
+					if(this.colorDistance(compareTo,  this.getPixel(i,j))<=threshold && pixels[i][j]){
+						newPic.getPixel(i,j).setColor(newColor);
+						for(int a = i-1; a < i+2; a++){
+							for(int b = j-1; b< j+2; b++){
+								if(a>=0 && a<this.getWidth() && b>=0 && b<this.getHeight()){
+									pixels[a][b] = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		}
 		
-		for(int a = x; a< this.getWidth(); a++){
-			for(int b = y; b< this.getHeight(); b--){
-				for(int i = x-1; i < x+2; i++){
-					for(int j = y-1; j < y+2; j++){
-						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
-							Pixel toChange = newPic.getPixel(i,j);
-							toChange.setColor(newColor);
-						}
-					}
-				}
-			}
-		}
-		for(int a = x; a< this.getWidth(); a--){
-			for(int b = y; b< this.getHeight(); b--){
-				for(int i = x-1; i < x+2; i++){
-					for(int j = y-1; j < y+2; j++){
-						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
-							Pixel toChange = newPic.getPixel(i,j);
-							toChange.setColor(newColor);
-						}
-					}
-				}
-			}
-		}
-		for(int a = x; a< this.getWidth(); a--){
-			for(int b = y; b< this.getHeight(); b++){
-				for(int i = x-1; i < x+2; i++){
-					for(int j = y-1; j < y+2; j++){
-						if(j<0 || j>=this.getHeight() || i<0 || i>=this.getWidth() || this.colorDistance(reference, this.getPixel(i, j))<=threshold){
-							Pixel toChange = newPic.getPixel(i,j);
-							toChange.setColor(newColor);
-						}
-					}
-				}
-			}
-		}
 		return newPic;
 	}
 
