@@ -1,5 +1,6 @@
 package src;
 import java.awt.*;
+import java.util.LinkedList;
 import java.net.URL;
 
 /**
@@ -921,18 +922,46 @@ public class Picture extends SimplePicture
 	 * 	the new color provided. 
 	 */
 	public Picture paintBucket(int x, int y, int threshold, Color newColor) {
+		Picture newPic = new Picture(this);
 		int width = this.getWidth();
 		int height = this.getHeight();
-		Picture newPic = new Picture(width, height);
 		Pixel comparePix = this.getPixel(x, y);
-		for (int h = 0 ; h < height ; h++) {
-			for (int w = 0 ; w < width ; w++) {
-				int dist = (int) colorDistance(comparePix, this.getPixel(w, h));
-				if (dist <= threshold) {
-					newPic.getPixel(w, h).setColor(newColor);
-				} else {
-					newPic.getPixel(w, h).setColor(
-											this.getPixel(w, h).getColor());
+		LinkedList<Pixel> queue = new LinkedList<Pixel>();
+		queue.add(newPic.getPixel(x, y));
+		while (queue.size() > 0) {
+			Pixel testPix = queue.getLast();
+			queue.removeLast();
+			int xCoor = testPix.getX();
+			int yCoor = testPix.getY();
+			if (colorDistance(testPix, comparePix) <= threshold) {
+				testPix.setColor(newColor);
+				if (yCoor < height - 1) {
+				queue.add(newPic.getPixel(xCoor,
+											yCoor + 1));
+				}
+				if (xCoor < width - 1) {
+				queue.add(newPic.getPixel(xCoor + 1,
+											yCoor));
+				}
+				if (xCoor > 0) {
+				queue.add(newPic.getPixel(xCoor - 1,
+											yCoor));
+				}
+				if (yCoor > 0) {
+				queue.add(newPic.getPixel(xCoor,
+											yCoor - 1));
+				}
+				if (yCoor < height - 1 && xCoor < width - 1) {
+					queue.add(newPic.getPixel(xCoor + 1, yCoor + 1));
+				}
+				if (yCoor < height - 1 && xCoor > 0) {
+					queue.add(newPic.getPixel(xCoor - 1, yCoor + 1));
+				}
+				if (yCoor > 0 && xCoor < width - 1) {
+					queue.add(newPic.getPixel(xCoor + 1, yCoor - 1));
+				}
+				if (xCoor > 0 && yCoor > 0) {
+					queue.add(newPic.getPixel(xCoor - 1, yCoor - 1));
 				}
 			}
 		}
