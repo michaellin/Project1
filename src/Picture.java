@@ -934,16 +934,21 @@ public class Picture extends SimplePicture
 	 */
 	private static boolean averagePatchWorks()
 	{
-		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel testPixel     = bg.getPixel(10, 10);
-		bg.setPixelToGray(10, 10);
-		int goalColor        = (int) testPixel.getAverage();
-		int originalAlpha    = testPixel.getColor().getAlpha();
-		boolean redCorrect   = testPixel.getRed() == goalColor;
-		boolean greenCorrect = testPixel.getGreen() == goalColor; 
-		boolean blueCorrect  = testPixel.getBlue() == goalColor;
-		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
-		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+		Picture testPic = Picture.loadPicture("Creek");
+		int correctReds = 0;
+		int correctBlues = 0;
+		int correctGreens = 0;
+		int correctAlphas = 0;
+		for (int w = 0 ; w < 11 ; w++) {
+			for (int h = 0 ; h < 11 ; h++) {
+				correctReds += testPic.getPixel(w, h).getRed();
+				correctBlues += testPic.getPixel(w, h).getBlue();
+				correctGreens += testPic.getPixel(w, h).getGreen();
+				correctAlphas += testPic.getPixel(w, h).getAlpha();
+			}
+		}
+		Color correctAverage = new Color(correctReds / 121, correctGreens / 121,
+											correctBlues / 121, correctAlphas / 121);
 	}
 	
 	
