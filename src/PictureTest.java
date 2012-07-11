@@ -88,11 +88,29 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
+	
+	public void testRotateNeg(){
+		Picture  pic = Picture.loadPicture("CalOriginal.bmp");
+		Picture picCopy = new Picture(pic);
+		Picture picCorrect = Picture.loadPicture("CalRotate1.bmp");
+		Picture picTest = pic.rotate(-3);
+		assertTrue(pic.equals(picCopy));
+		assertTrue(picCorrect.equals(picTest));
+	}
+	
+	public void testRotate6(){
+		Picture  pic = Picture.loadPicture("CalOriginal.bmp");
+		Picture picCopy = new Picture(pic);
+		Picture picCorrect = Picture.loadPicture("CalRotate2.bmp");
+		Picture picTest = pic.rotate(6);
+		assertTrue(pic.equals(picCopy));
+		assertTrue(picCorrect.equals(picTest));
+	}
 	/*
 	 * Validate that flip(Picture.HORIZONTAL) works and does not modify the 
 	 * original Picture object.
 	 */
-	public void testFlipHorixontal()
+	public void testFlipHorizontal()
 	{
 		Picture pic 		= Picture.loadPicture("CalOriginal.bmp");
 		Picture picCopy 	= new Picture(pic);
@@ -139,6 +157,47 @@ public class PictureTest extends TestCase {
 		Picture picTest		= pic.flip(Picture.BACKWARD_DIAGONAL);
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
+	}
+	
+	/*
+	 * Tests that a non-recognized integer will throw an IllegalArgumentException
+	 * 
+	 */
+	public void testFlipIllegalArgument(){
+		Picture pic 		= Picture.loadPicture("CalOriginal.bmp");
+		Picture picCopy 	= new Picture(pic);
+		try{
+			Picture picTest		= pic.flip(-13527);
+			assertTrue(false);
+		} catch (IllegalArgumentException e){
+			assertTrue(true);
+		}
+	}
+	
+	/*
+	 * Tests flip by flipping in each fashion two times: result should be the original picture
+	 * 
+	 */
+	public void testFlipTwoTimes(){
+		Picture pic 		= Picture.loadPicture("CalOriginal.bmp");
+		Picture picCopy 	= new Picture(pic);
+		for(int i = 0; i < 2; i++){
+			picCopy	= picCopy.flip(Picture.BACKWARD_DIAGONAL);
+		}
+		assertTrue(pic.equals(picCopy));
+		for(int i = 0; i < 2; i++){
+			picCopy	= picCopy.flip(Picture.FORWARD_DIAGONAL);
+		}
+		assertTrue(pic.equals(picCopy));
+		for(int i = 0; i < 2; i++){
+			picCopy	= picCopy.flip(Picture.FORWARD_DIAGONAL);
+		}
+		assertTrue(pic.equals(picCopy));
+		for(int i = 0; i < 2; i++){
+			picCopy	= picCopy.flip(Picture.FORWARD_DIAGONAL);
+		}
+		assertTrue(pic.equals(picCopy));
+		
 	}
 	/*
 	 * Validate that blur works and does not modify the 
