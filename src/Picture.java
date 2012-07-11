@@ -669,7 +669,11 @@ public class Picture extends SimplePicture
 		return newPic;
 	}
 		
-
+	/**
+	 * Convenience method to convert a negative number to positive.
+	 * @param num The number to convert to positive.
+	 * 
+	 */
 	private static int toPos(int num) {
 		int result = num;
 		while (result < 0) {
@@ -678,6 +682,10 @@ public class Picture extends SimplePicture
 		return result;
 	}
 	
+	/**
+	 * Test method for toPos(). This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
 	private static boolean toPosWorks(){
 		return (toPos(0) == 0) && (toPos(-3)==1);
 	}
@@ -712,52 +720,33 @@ public class Picture extends SimplePicture
 		}else{
 			throw new IllegalArgumentException("invalid argument");
 		}
-		if(axis == Picture.HORIZONTAL){
-			for(int w = 0; w < this.getWidth(); w++){
-				for(int h = 0; h< this.getHeight(); h++){
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(w, this.getHeight() - h - 1);
-					toChange.setColor(toSet);
+		int xCoord;
+		int yCoord;
+		for(int w = 0; w < this.getWidth(); w++){
+			for(int h = 0; h < this.getHeight(); h++){
+				if(axis == Picture.HORIZONTAL){
+					xCoord = w;
+					yCoord = this.getHeight()-h-1;
+				}else if(axis == Picture.VERTICAL){
+					xCoord = this.getWidth()-w-1;
+					yCoord = h;
+				}else if(axis == Picture.FORWARD_DIAGONAL){
+					xCoord = this.getHeight()-h-1;
+					yCoord = newPic.getHeight()-w-1;
+				}else if(axis == Picture.BACKWARD_DIAGONAL){
+					xCoord = h;
+					yCoord = w;
+				}else{
+					xCoord = w;
+					yCoord = h;
 				}
+				Color toSet = this.getPixel(w, h).getColor();
+				Pixel toChange = newPic.getPixel(xCoord, yCoord);
+				toChange.setColor(toSet);
 			}
-			return newPic;
-		}
-		else if(axis == Picture.VERTICAL){
-			for(int w = 0; w < this.getWidth(); w++){
-				for(int h = 0; h < this.getHeight(); h++){
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(this.getWidth()-w - 1, h);
-					toChange.setColor(toSet);
-				}
-			}	
-		}
-		else if(axis == Picture.FORWARD_DIAGONAL){
-			for(int w = 0; w < this.getWidth(); w++){
-				for(int h = 0; h < this.getHeight(); h++){
-					
-					int xCoord = w;
-					int yCoord = this.getHeight() - h - 1;
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(yCoord, newPic.getHeight() - xCoord - 1);
-					toChange.setColor(toSet);
-					
-				}
-			}	
-		}else if(axis == Picture.BACKWARD_DIAGONAL){
-			
-			for(int w = 0; w < this.getWidth(); w++){
-				for(int h = 0; h < this.getHeight(); h++){
-				
-					int xCoord = w;
-					int yCoord = h;
-					Color toSet = this.getPixel(w, h).getColor();
-					Pixel toChange = newPic.getPixel(yCoord, xCoord);
-					toChange.setColor(toSet);
-				}
-			}	
 		}
 		return newPic;
-	}
+	}	
 
 	/**
 	 * @param threshold
