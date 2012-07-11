@@ -2,8 +2,6 @@ package src;
 import java.awt.Color;
 
 import junit.framework.TestCase;
-import java.lang.Long;
-import java.util.Calendar;
 import java.util.LinkedList;
 import static org.junit.Assert.*;
 
@@ -278,15 +276,38 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
-	public LinkedList<Long> testRunTime() {
+
+	public void testRunTime() {
 		LinkedList<Long> times = new LinkedList<Long>();
-		for (int n = 1 ; n < 7 ; n++) {
-			Picture pic1 = Picture.loadPicture("creek" + n + "00.bmp");
-			long start = System.currentTimeMillis();
-			pic1.blur(5);
-			long end = System.currentTimeMillis();
-			times.add(new Long(start - end));
+		for (int n = 5 ; n < 50  ; n += 5) {
+			long total = 0;
+			for (int r = 0 ; r < 5 ; r++) {
+				Picture pic1 = Picture.loadPicture("Creek" + n + "0.bmp");
+				long start = System.currentTimeMillis();
+				pic1.blur(5);
+				long end = System.currentTimeMillis();
+				total += (end - start);
+			}
+			times.add(new Long(total/5));
 		}
-		return times;
+
+		System.out.println(times);
+	}
+	
+	public void testRunTimeThreshold(){
+		LinkedList<Long> times = new LinkedList<Long>();
+		for (int n = 0 ; n < 7 ; n++) {
+			long total = 0;
+			for (int r = 0 ; r < 3 ; r++) {
+				Picture pic1 = Picture.loadPicture("Creek.bmp");
+				long start = System.currentTimeMillis();
+				pic1.blur(n);
+				long end = System.currentTimeMillis();
+				total += (end - start);
+			}
+			times.add(new Long(total/3));
+		}
+		System.out.println(times);
+		assertTrue(true);
 	}
 }
