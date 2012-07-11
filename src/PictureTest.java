@@ -281,7 +281,7 @@ public class PictureTest extends TestCase {
 		LinkedList<Long> times = new LinkedList<Long>();
 		for (int n = 5 ; n < 50  ; n += 5) {
 			long total = 0;
-			for (int r = 0 ; r < 5 ; r++) {
+			for (int r = 0 ; r < 6 ; r++) {
 				Picture pic1 = Picture.loadPicture("Creek" + n + "0.bmp");
 				long start = System.currentTimeMillis();
 				pic1.blur(5);
@@ -296,16 +296,16 @@ public class PictureTest extends TestCase {
 	
 	public void testRunTimeThreshold(){
 		LinkedList<Long> times = new LinkedList<Long>();
-		for (int n = 0 ; n < 7 ; n++) {
+		for (int n = 1 ; n < 6 ; n++) {
 			long total = 0;
-			for (int r = 0 ; r < 3 ; r++) {
-				Picture pic1 = Picture.loadPicture("Creek.bmp");
+			for (int r = 0 ; r < 6 ; r++) {
+				Picture pic1 = Picture.loadPicture("Colleen.bmp");
 				long start = System.currentTimeMillis();
 				pic1.blur(n);
 				long end = System.currentTimeMillis();
 				total += (end - start);
 			}
-			times.add(new Long(total/3));
+			times.add(new Long(total/5));
 		}
 		System.out.println(times);
 		assertTrue(true);

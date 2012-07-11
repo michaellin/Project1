@@ -177,33 +177,31 @@ public class Picture extends SimplePicture
 		{
 			return false;
 		}
-
 		if (!Picture.negateWorks())
 		{
 			return false;
 		}
-
 		if (!Picture.lightenWorks())
 		{
 			return false;
 		}
-
 		if (!Picture.darkenWorks())
 		{
 			return false;
 		}
-
 		if (!Picture.addRedWorks())
 		{
 			return false;
 		}
-		
 		if (!Picture.addGreenWorks())
 		{
 			return false;
 		}
-
 		if (!Picture.addBlueWorks())
+		{
+			return false;
+		}
+		if (!Picture.averagePatchWorks())
 		{
 			return false;
 		}
@@ -882,7 +880,9 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that is the blurred version of this Picture, using
 	 *         a blurring square of size (2 * threshold) + 1.
 	 */
+	/* TODO test with threshold larger than picture */
 	public Picture blur(int blurThreshold) {
+		if (blurThreshold > 0) {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
@@ -893,6 +893,9 @@ public class Picture extends SimplePicture
 			}
 		}
 		return newPic;
+		} else {
+			return this;
+		}
 	}
 
 	/**
@@ -934,13 +937,13 @@ public class Picture extends SimplePicture
 	 */
 	private static boolean averagePatchWorks()
 	{
-		Picture testPic = Picture.loadPicture("Creek");
+		Picture testPic = Picture.loadPicture("Creek.bmp");
 		int correctReds = 0;
 		int correctBlues = 0;
 		int correctGreens = 0;
 		int correctAlphas = 0;
 		for (int w = 0 ; w < 11 ; w++) {
-			for (int h = 0 ; h < 11 ; h++) {
+				for (int h = 0 ; h < 11 ; h++) {
 				correctReds += testPic.getPixel(w, h).getRed();
 				correctBlues += testPic.getPixel(w, h).getBlue();
 				correctGreens += testPic.getPixel(w, h).getGreen();
@@ -949,8 +952,9 @@ public class Picture extends SimplePicture
 		}
 		Color correctAverage = new Color(correctReds / 121, correctGreens / 121,
 											correctBlues / 121, correctAlphas / 121);
+		Color testAverage = testPic.averagePatch(5, 5, 5);
+		return correctAverage.equals(testAverage);
 	}
-	
 	
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
