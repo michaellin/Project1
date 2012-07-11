@@ -173,39 +173,36 @@ public class Picture extends SimplePicture
 	 */
 	public static boolean helpersWork()
 	{
-		if (!Picture.setPixelToGrayWorks())
-		{
+		if (!Picture.setPixelToGrayWorks()) {
 			return false;
 		}
-		if (!Picture.negateWorks())
-		{
+		if (!Picture.negateWorks()) {
 			return false;
 		}
-		if (!Picture.lightenWorks())
-		{
+		if (!Picture.lightenWorks()) {
 			return false;
 		}
-		if (!Picture.darkenWorks())
-		{
+		if (!Picture.darkenWorks()) {
 			return false;
 		}
-		if (!Picture.addRedWorks())
-		{
+		if (!Picture.addRedWorks()) {
 			return false;
 		}
-		if (!Picture.addGreenWorks())
-		{
+		if (!Picture.addGreenWorks()) {
 			return false;
 		}
-		if (!Picture.addBlueWorks())
-		{
+		if (!Picture.addBlueWorks()) {
 			return false;
 		}
-		if (!Picture.averagePatchWorks())
-		{
+		if (!Picture.averagePatchWorks1()) {
 			return false;
 		}
-		
+		if (!Picture.averagePatchWorks2()) {
+			return false;
+		}
+		if (!Picture.blurWorks1()) {
+			return false;
+		}
 		if(!Picture.toPosWorks()){
 			return false;
 		}
@@ -962,10 +959,10 @@ public class Picture extends SimplePicture
 
 	
 	/**
-	 * Test method for setPixelToGray. This method is called by
+	 * Test method for the helper method averagePatch(). This method is called by
 	 * the JUnit file through the public method Picture.helpersWork().
 	 */
-	private static boolean averagePatchWorks()
+	private static boolean averagePatchWorks1()
 	{
 		Picture testPic = Picture.loadPicture("Creek.bmp");
 		int correctReds = 0;
@@ -986,6 +983,43 @@ public class Picture extends SimplePicture
 		return correctAverage.equals(testAverage);
 	}
 	
+	/**
+	 * Test method for helper method averagePatch for pixels outside the Picture's range.
+	 *  This method is called by the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean averagePatchWorks2()
+	{
+		Picture testPic = Picture.loadPicture("Creek.bmp");
+		int correctReds = 0;
+		int correctBlues = 0;
+		int correctGreens = 0;
+		int correctAlphas = 0;
+		for (int w = 0 ; w < 9 ; w++) {
+				for (int h = 0 ; h < 9 ; h++) {
+				correctReds += testPic.getPixel(w, h).getRed();
+				correctBlues += testPic.getPixel(w, h).getBlue();
+				correctGreens += testPic.getPixel(w, h).getGreen();
+				correctAlphas += testPic.getPixel(w, h).getAlpha();
+			}
+		}
+		Color correctAverage = new Color(correctReds / 81, correctGreens / 81,
+											correctBlues / 81, correctAlphas / 81);
+		Color testAverage = testPic.averagePatch(3, 3, 5);
+		return correctAverage.equals(testAverage);
+	}
+	
+	private static boolean blurWorks1()
+	{
+		Picture testPic = Picture.loadPicture("dollar.bmp");
+		try {
+			testPic.blur(30);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
 	 * @param y y-coordinate of the pixel currently selected.
