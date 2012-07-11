@@ -173,41 +173,36 @@ public class Picture extends SimplePicture
 	 */
 	public static boolean helpersWork()
 	{
-		if (!Picture.setPixelToGrayWorks())
-		{
+		if (!Picture.setPixelToGrayWorks()) {
 			return false;
 		}
-
-		if (!Picture.negateWorks())
-		{
+		if (!Picture.negateWorks()) {
 			return false;
 		}
-
-		if (!Picture.lightenWorks())
-		{
+		if (!Picture.lightenWorks()) {
 			return false;
 		}
-
-		if (!Picture.darkenWorks())
-		{
+		if (!Picture.darkenWorks()) {
 			return false;
 		}
-
-		if (!Picture.addRedWorks())
-		{
+		if (!Picture.addRedWorks()) {
 			return false;
 		}
-		
-		if (!Picture.addGreenWorks())
-		{
+		if (!Picture.addGreenWorks()) {
 			return false;
 		}
-
-		if (!Picture.addBlueWorks())
-		{
+		if (!Picture.addBlueWorks()) {
 			return false;
 		}
-		
+		if (!Picture.averagePatchWorks1()) {
+			return false;
+		}
+		if (!Picture.averagePatchWorks2()) {
+			return false;
+		}
+		if (!Picture.blurWorks1()) {
+			return false;
+		}
 		if(!Picture.toPosWorks()){
 			return false;
 		}
@@ -647,7 +642,6 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture that is the rotated version of this Picture.
 	 */
-	 /* TODO still need to be tested */
 	public Picture rotate (int rotations) {
 		int rotNums = toPos(rotations) % 4;
 		Picture tmpPic;
@@ -670,9 +664,16 @@ public class Picture extends SimplePicture
 	}
 		
 	/**
+<<<<<<< HEAD
 	 * Convenience method to convert a negative number to positive.
 	 * @param num The number to convert to positive.
 	 * 
+=======
+	 * Helper method to convert negative parameters of rotate 
+	 * to positive number of rotations.
+	 * @param num
+	 * @return
+>>>>>>> refs/heads/michael/master
 	 */
 	private static int toPos(int num) {
 		int result = num;
@@ -765,6 +766,7 @@ public class Picture extends SimplePicture
 	 *         (with an alpha of 255). The pixel at (0, 0) will always be set to
 	 *         white.
 	 */
+	/*TODO*/
 	public Picture showEdges(double threshold) {
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -830,6 +832,7 @@ public class Picture extends SimplePicture
 	 * 	as the original Picture; this might involve characters being
 	 * 	partially copied to the final Picture. 
 	 */
+	/*TODO*/
 	
 	public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
@@ -902,6 +905,7 @@ public class Picture extends SimplePicture
 	 *         a blurring square of size (2 * threshold) + 1.
 	 */
 	public Picture blur(int blurThreshold) {
+		if (blurThreshold > 0) {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
@@ -912,6 +916,9 @@ public class Picture extends SimplePicture
 			}
 		}
 		return newPic;
+		} else {
+			return this;
+		}
 	}
 
 	/**
@@ -948,24 +955,71 @@ public class Picture extends SimplePicture
 
 	
 	/**
-	 * Test method for setPixelToGray. This method is called by
+	 * Test method for the helper method averagePatch(). This method is called by
 	 * the JUnit file through the public method Picture.helpersWork().
 	 */
-	private static boolean averagePatchWorks()
+	private static boolean averagePatchWorks1()
 	{
-		Picture bg           = Picture.loadPicture("Creek.bmp");
-		Pixel testPixel     = bg.getPixel(10, 10);
-		bg.setPixelToGray(10, 10);
-		int goalColor        = (int) testPixel.getAverage();
-		int originalAlpha    = testPixel.getColor().getAlpha();
-		boolean redCorrect   = testPixel.getRed() == goalColor;
-		boolean greenCorrect = testPixel.getGreen() == goalColor; 
-		boolean blueCorrect  = testPixel.getBlue() == goalColor;
-		boolean alphaCorrect = testPixel.getAlpha() == originalAlpha;
-		return redCorrect && greenCorrect && blueCorrect && alphaCorrect;
+		Picture testPic = Picture.loadPicture("Creek.bmp");
+		int correctReds = 0;
+		int correctBlues = 0;
+		int correctGreens = 0;
+		int correctAlphas = 0;
+		for (int w = 0 ; w < 11 ; w++) {
+				for (int h = 0 ; h < 11 ; h++) {
+				correctReds += testPic.getPixel(w, h).getRed();
+				correctBlues += testPic.getPixel(w, h).getBlue();
+				correctGreens += testPic.getPixel(w, h).getGreen();
+				correctAlphas += testPic.getPixel(w, h).getAlpha();
+			}
+		}
+		Color correctAverage = new Color(correctReds / 121, correctGreens / 121,
+											correctBlues / 121, correctAlphas / 121);
+		Color testAverage = testPic.averagePatch(5, 5, 5);
+		return correctAverage.equals(testAverage);
 	}
 	
+	/**
+	 * Test method for helper method averagePatch for pixels outside the Picture's range.
+	 *  This method is called by the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean averagePatchWorks2()
+	{
+		Picture testPic = Picture.loadPicture("Creek.bmp");
+		int correctReds = 0;
+		int correctBlues = 0;
+		int correctGreens = 0;
+		int correctAlphas = 0;
+		for (int w = 0 ; w < 9 ; w++) {
+				for (int h = 0 ; h < 9 ; h++) {
+				correctReds += testPic.getPixel(w, h).getRed();
+				correctBlues += testPic.getPixel(w, h).getBlue();
+				correctGreens += testPic.getPixel(w, h).getGreen();
+				correctAlphas += testPic.getPixel(w, h).getAlpha();
+			}
+		}
+		Color correctAverage = new Color(correctReds / 81, correctGreens / 81,
+											correctBlues / 81, correctAlphas / 81);
+		Color testAverage = testPic.averagePatch(3, 3, 5);
+		return correctAverage.equals(testAverage);
+	}
 	
+	/**
+	 * Test method for blur. Tests for blur thresholds larger than the picture.
+	 *  This method is called by the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean blurWorks1()
+	{
+		Picture testPic = Picture.loadPicture("dollar.bmp");
+		try {
+			testPic.blur(30);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param x x-coordinate of the pixel currently selected.
 	 * @param y y-coordinate of the pixel currently selected.
