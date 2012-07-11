@@ -278,7 +278,7 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
-	public LinkedList<Long> getRunTime() {
+	public LinkedList<Long> testRunTime() {
 		LinkedList<Long> times = new LinkedList<Long>();
 		for (int n = 1 ; n < 7 ; n++) {
 			Picture pic1 = Picture.loadPicture("creek" + n + "00.bmp");
