@@ -276,6 +276,7 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
+
 	public void testRunTime() {
 		LinkedList<Long> times = new LinkedList<Long>();
 		for (int n = 5 ; n < 50  ; n += 5) {
@@ -291,5 +292,22 @@ public class PictureTest extends TestCase {
 		}
 
 		System.out.println(times);
+	}
+	
+	public void testRunTimeThreshold(){
+		LinkedList<Long> times = new LinkedList<Long>();
+		for (int n = 0 ; n < 7 ; n++) {
+			long total = 0;
+			for (int r = 0 ; r < 3 ; r++) {
+				Picture pic1 = Picture.loadPicture("Creek.bmp");
+				long start = System.currentTimeMillis();
+				pic1.blur(n);
+				long end = System.currentTimeMillis();
+				total += (end - start);
+			}
+			times.add(new Long(total/3));
+		}
+		System.out.println(times);
+		assertTrue(true);
 	}
 }
