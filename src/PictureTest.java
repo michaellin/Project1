@@ -212,6 +212,18 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
+	
+	/*
+	 * Validate that blur doesn't modify the picture if the threshold given is simply zero.
+	 * 
+	 */
+	public void testBlurZero(){
+		Picture pic 		= Picture.loadPicture("Creek.bmp");
+		Picture picCopy 	= new Picture(pic);
+		Picture picTest		= pic.blur(0);
+		assertTrue(pic.equals(picCopy));
+		assertTrue(pic.equals(picTest));
+	}
 	/*
 	 * Validate that showEdges works and does not modify the 
 	 * original Picture object.
@@ -288,7 +300,7 @@ public class PictureTest extends TestCase {
 	 * Tests the color changing a solid color:
 	 * addRed
 	 */
-	public void testColorTranslationsReder()
+	public void testColorTranslationsRedder()
 	{
 		Picture pic = Picture.loadPicture("Gray.bmp");
 		Picture reder = Picture.loadPicture("Gray_more_red.bmp");
@@ -334,7 +346,9 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-
+	
+	/*
+	 * Run-time test that shows run-times of blur with various picture sizes. Was used in blur analysis.
 	/**
 	 * Validate that paintBucket will only paint colors that are linked
 	 * to the chosen pixel.
@@ -367,7 +381,9 @@ public class PictureTest extends TestCase {
 
 		System.out.println(times);
 	}
-	
+
+	/*
+	 * Run-time test that shows run-times of blur with various thresholds. Was used in blur analysis.
 	/**
 	 * Test run-time of blur with different thresholds.
 	 */
