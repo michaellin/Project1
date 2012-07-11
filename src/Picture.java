@@ -209,6 +209,9 @@ public class Picture extends SimplePicture
 		if(!Picture.colorDistanceWorks()){
 			return false;
 		}
+		if(!showEdgesWork()) {
+			return false;
+		}
 		return true;
 	}
 
@@ -780,7 +783,7 @@ public class Picture extends SimplePicture
 	 *         white.
 	 */
 	/*TODO*/
-	public Picture showEdges(double threshold) {
+	public Picture showEdges(int threshold) {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Picture newPic = new Picture(width, height);
@@ -807,6 +810,27 @@ public class Picture extends SimplePicture
 		}
 		return newPic;
 	}
+
+	private boolean isOkColors() {
+		boolean isOk = true;
+		 for (int w = 0 ; w < this.getWidth() ; w++) {
+			 for (int h = 0 ; h < this.getHeight() ; h++) {
+				 Pixel toCheck = this.getPixel(w, h);
+				 if (!(toCheck.getColor().equals(Color.white) ||
+					 toCheck.getColor().equals(Color.black))) {
+					 isOk = false;
+				 }
+			 }
+		 }
+		 return isOk;
+	}
+
+	private static boolean showEdgesWork() {
+		Picture pic = Picture.loadPicture("Colleen.bmp");
+		Picture testPic = pic.showEdges(30); 
+		return testPic.isOkColors();
+	}
+
 
 	//////////////////////////////// Level 3 //////////////////////////////////
 
