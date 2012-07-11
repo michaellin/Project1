@@ -334,8 +334,23 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	
 
+	/**
+	 * Validate that paintBucket will only paint colors that are linked
+	 * to the chosen pixel.
+	 */
+	public void testPaintBucketCorrect() {
+		Picture pic = Picture.loadPicture("Creek.bmp");
+		Picture newPic = pic.paintBucket(446, 168, 40, new Color(0, 255, 0));
+		Pixel subject = newPic.getPixel(446, 168);
+		System.out.println(subject.getAlpha());
+		assertTrue(subject.getColor().equals(new Color(0, 255, 0)));
+		assertTrue(!newPic.getPixel(152, 167).getColor().equals(new Color(0, 255, 0)));
+	}
+
+	/**
+	 * Test run-time of blur with different picture sizes.
+	 */
 	public void testRunTime() {
 		LinkedList<Long> times = new LinkedList<Long>();
 		for (int n = 5 ; n < 50  ; n += 5) {
@@ -353,6 +368,9 @@ public class PictureTest extends TestCase {
 		System.out.println(times);
 	}
 	
+	/**
+	 * Test run-time of blur with different thresholds.
+	 */
 	public void testRunTimeThreshold(){
 		LinkedList<Long> times = new LinkedList<Long>();
 		for (int n = 1 ; n < 6 ; n++) {

@@ -642,7 +642,6 @@ public class Picture extends SimplePicture
 	 * 
 	 * @return A new Picture that is the rotated version of this Picture.
 	 */
-	 /* TODO still need to be tested */
 	public Picture rotate (int rotations) {
 		int rotNums = toPos(rotations) % 4;
 		Picture tmpPic;
@@ -664,7 +663,12 @@ public class Picture extends SimplePicture
 		return newPic;
 	}
 		
-
+	/**
+	 * Helper method to convert negative parameters of rotate 
+	 * to positive number of rotations.
+	 * @param num
+	 * @return
+	 */
 	private static int toPos(int num) {
 		int result = num;
 		while (result < 0) {
@@ -673,6 +677,10 @@ public class Picture extends SimplePicture
 		return result;
 	}
 	
+	/**
+	 * Test method for toPos(). This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
 	private static boolean toPosWorks(){
 		return (toPos(0) == 0) && (toPos(-3)==1);
 	}
@@ -771,6 +779,7 @@ public class Picture extends SimplePicture
 	 *         (with an alpha of 255). The pixel at (0, 0) will always be set to
 	 *         white.
 	 */
+	/*TODO*/
 	public Picture showEdges(double threshold) {
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -836,6 +845,7 @@ public class Picture extends SimplePicture
 	 * 	as the original Picture; this might involve characters being
 	 * 	partially copied to the final Picture. 
 	 */
+	/*TODO*/
 	
 	public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
@@ -907,7 +917,6 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that is the blurred version of this Picture, using
 	 *         a blurring square of size (2 * threshold) + 1.
 	 */
-	/* TODO test with threshold larger than picture */
 	public Picture blur(int blurThreshold) {
 		if (blurThreshold > 0) {
 		int width = this.getWidth();
@@ -1008,6 +1017,10 @@ public class Picture extends SimplePicture
 		return correctAverage.equals(testAverage);
 	}
 	
+	/**
+	 * Test method for blur. Tests for blur thresholds larger than the picture.
+	 *  This method is called by the JUnit file through the public method Picture.helpersWork().
+	 */
 	private static boolean blurWorks1()
 	{
 		Picture testPic = Picture.loadPicture("dollar.bmp");
