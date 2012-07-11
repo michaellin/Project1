@@ -349,8 +349,6 @@ public class PictureTest extends TestCase {
 	
 	/*
 	 * Run-time test that shows run-times of blur with various picture sizes. Was used in blur analysis.
-=======
-
 	/**
 	 * Validate that paintBucket will only paint colors that are linked
 	 * to the chosen pixel.
@@ -386,10 +384,8 @@ public class PictureTest extends TestCase {
 
 	/*
 	 * Run-time test that shows run-times of blur with various thresholds. Was used in blur analysis.
-=======
 	/**
 	 * Test run-time of blur with different thresholds.
->>>>>>> refs/heads/michael/master
 	 */
 	public void testRunTimeThreshold(){
 		LinkedList<Long> times = new LinkedList<Long>();
