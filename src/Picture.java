@@ -205,7 +205,13 @@ public class Picture extends SimplePicture
 		{
 			return false;
 		}
-
+		
+		if(!Picture.toPosWorks()){
+			return false;
+		}
+		if(!Picture.colorDistanceWorks()){
+			return false;
+		}
 		return true;
 	}
 
@@ -585,7 +591,7 @@ public class Picture extends SimplePicture
 		
 		for (int h = 0; h < picHeight ; h++) {
 			for (int w = 0 ; w < picWidth ; w++) {
-				if (this.colorDistance(this.getPixel(w,h), comparePixel) <= threshold) {
+				if (colorDistance(this.getPixel(w,h), comparePixel) <= threshold) {
 					Pixel currentPixel = chromaPicture.getPixel(w,h);
 					Pixel backgroundPixel = background.getPixel(w,h);
 					currentPixel.setRed(backgroundPixel.getRed());
@@ -597,11 +603,31 @@ public class Picture extends SimplePicture
 		return chromaPicture;
 	}
 	
-	public double colorDistance(Pixel myPixel, Pixel comparison){
+	/**
+	 * Convenience method to determine the color distance between two pixels. Helper method for chromaKey and other methods.
+	 * @param myPixel the initial pixel
+	 * @param comparison the pixel to compare to.
+	 * 
+	 */
+	private static double colorDistance(Pixel myPixel, Pixel comparison){
 		double red = Math.pow(myPixel.getRed() - comparison.getRed(), 2);
 		double blue = Math.pow(myPixel.getBlue() - comparison.getBlue(), 2);
 		double green = Math.pow(myPixel.getGreen() - comparison.getGreen(), 2);
 		return Math.sqrt(red + blue + green);
+	}
+	
+	/**
+	 * Test method for colorDistance(). This method is called by
+	 * the JUnit file through the public method Picture.helpersWork().
+	 */
+	private static boolean colorDistanceWorks(){
+		Picture bg           = Picture.loadPicture("Creek.bmp");
+		Picture copy = new Picture(bg);
+		Pixel myPixel   = copy.getPixel(10, 10);
+		Pixel otherPixel = copy.getPixel(15, 15);
+		myPixel.setColor(new Color(0, 0, 0));
+		otherPixel.setColor(new Color(10, 10, 10));
+		return colorDistance(myPixel, otherPixel) == Math.sqrt(300);
 	}
 	
 
@@ -642,12 +668,16 @@ public class Picture extends SimplePicture
 	}
 		
 
-	private int toPos(int num) {
+	private static int toPos(int num) {
 		int result = num;
 		while (result < 0) {
 			result = result + 4;
 		}
 		return result;
+	}
+	
+	private static boolean toPosWorks(){
+		return (toPos(0) == 0) && (toPos(-3)==1);
 	}
 		
 
