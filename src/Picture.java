@@ -208,28 +208,16 @@ public class Picture extends SimplePicture {
 		if (!Picture.averagePatchWorks2()) {
 			return false;
 		}
-		if (!Picture.blurWorks1()) {
-			return false;
-		}
 		if (!Picture.toPosWorks()) {
 			return false;
 		}
 		if (!Picture.colorDistanceWorks()) {
 			return false;
 		}
-		
-		if(!averagePatchWorks1()){
+		if(!accumChunkColorWorks()) {
 			return false;
 		}
-		
-		if(!averagePatchWorks1()){
-			return false;
-		}
-		
-		if(!blurWorks1()){
-			return false;
-		}
-		if(!showEdgesWork()) {
+		if(!replaceWithAsciiWorks()){
 			return false;
 		}
 		return true;
@@ -363,7 +351,6 @@ public class Picture extends SimplePicture {
 	 *         by the darkenenAmount.
 	 */
 	public Picture darken(int darkenAmount) {
-		// REPLACE THE CODE BELOW WITH YOUR OWN.
 		Picture darkPicture = new Picture(this);
 		int picHeight = this.getHeight();
 		int picWidth = this.getWidth();
@@ -788,7 +775,6 @@ public class Picture extends SimplePicture {
 	 *         (with an alpha of 255). The pixel at (0, 0) will always be set to
 	 *         white.
 	 */
-	/*TODO*/
 	public Picture showEdges(int threshold) {
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -815,26 +801,6 @@ public class Picture extends SimplePicture {
 			}
 		}
 		return newPic;
-	}
-
-	private boolean isOkColors() {
-		boolean isOk = true;
-		 for (int w = 0 ; w < this.getWidth() ; w++) {
-			 for (int h = 0 ; h < this.getHeight() ; h++) {
-				 Pixel toCheck = this.getPixel(w, h);
-				 if (!(toCheck.getColor().equals(Color.white) ||
-					 toCheck.getColor().equals(Color.black))) {
-					 isOk = false;
-				 }
-			 }
-		 }
-		 return isOk;
-	}
-
-	private static boolean showEdgesWork() {
-		Picture pic = Picture.loadPicture("Colleen.bmp");
-		Picture testPic = pic.showEdges(30); 
-		return testPic.isOkColors();
 	}
 
 
@@ -869,14 +835,13 @@ public class Picture extends SimplePicture {
 	 *         the original Picture; this might involve characters being
 	 *         partially copied to the final Picture.
 	 */
-	/* TODO */
 
 	public Picture convertToAscii() {
 		Picture analyzePic = this.grayscale();
 		Picture newPic = new Picture(this.getWidth(), this.getHeight());
 		for (int w = 0; w < this.getWidth(); w += 10) {
 			for (int h = 0; h < this.getHeight(); h += 20) {
-				int average = accumChunkColor(w, h, analyzePic);
+				int average = Picture.accumChunkColor(w, h, analyzePic);
 				replaceWithAscii(w, h, newPic, getAsciiPic(average));
 			}
 		}
@@ -892,7 +857,7 @@ public class Picture extends SimplePicture {
 	 * @param pic
 	 * @return int of average value
 	 */
-	private int accumChunkColor(int initX, int initY, Picture pic) {
+	private static int accumChunkColor(int initX, int initY, Picture pic) {
 		int average = 0;
 		int accumWidth = 0;
 		int accumHeight = 0;
@@ -922,6 +887,42 @@ public class Picture extends SimplePicture {
 			}
 		}
 	}
+
+
+	/**
+	 * Test method for the helper method accumChunkColor(). This method is called
+	 * by the JUnit file through the public method Picture.helpersWork().
+	 */
+	 private static boolean accumChunkColorWorks() {
+		 Picture pic = Picture.loadPicture("Creek.bmp");
+		 int testAverage = Picture.accumChunkColor(pic.getWidth() - 5, 0, pic);
+		 int correctAverage = 0;
+		for (int w = pic.getWidth() - 5 ; w < pic.getWidth(); w++) {
+			for (int h = 0; h < 20 ; h++) {
+				correctAverage += pic.getPixel(w, h).getAverage();
+			}
+		}
+		correctAverage = correctAverage/100;
+		return correctAverage == testAverage;
+	 }
+
+	private static boolean replaceWithAsciiWorks(){
+		Picture pic = Picture.loadPicture("Colleen.bmp");
+		Picture ascii = Picture.loadPicture("ampersand.bmp");
+		int bmpXCoord = 0;
+		pic.replaceWithAscii(pic.getWidth() - 5, 0, pic, ascii);
+		for (int w = pic.getWidth() - 5; w < pic.getWidth(); w++) {
+			for (int h = 0; h < 20 ; h++) {
+				if(!pic.getPixel(w, h).equals(ascii.getPixel(bmpXCoord, h))){
+					return false;
+				}
+			}
+			bmpXCoord++;
+		}
+		return true;
+		
+	}
+
 
 	/**
 	 * Blurs this Picture. To achieve this, the algorithm takes a pixel, and
@@ -1041,21 +1042,6 @@ public class Picture extends SimplePicture {
 		return correctAverage.equals(testAverage);
 	}
 
-	/**
-	 * Test method for blur. Tests for blur thresholds larger than the picture.
-	 * This method is called by the JUnit file through the public method
-	 * Picture.helpersWork().
-	 */
-	private static boolean blurWorks1() {
-		Picture testPic = Picture.loadPicture("dollar.bmp");
-		try {
-			testPic.blur(30);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * @param x

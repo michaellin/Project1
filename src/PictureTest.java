@@ -5,14 +5,14 @@ import junit.framework.TestCase;
 import java.util.LinkedList;
 import static org.junit.Assert.*;
 
-/*
+/**
  * This testing framework provides basic level tests for 
  * each of the methods, however additional testing will be 
  * required, along with extensive testing of ALL helper methods
  * that you write.
  */
 public class PictureTest extends TestCase {
-	/*
+	/**
 	 * A method to test the private helper methods within
 	 * Picture.java
 	 */
@@ -21,7 +21,7 @@ public class PictureTest extends TestCase {
 		assertTrue(Picture.helpersWork());
 		
 	}
-	/*
+	/**
 	 * Validate that grayscale works and does not modify the 
 	 * original Picture object.
 	 */
@@ -34,7 +34,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that negate works and does not modify the 
 	 * original Picture object.
 	 */
@@ -47,7 +47,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that rotate(1) works and does not modify the 
 	 * original Picture object.
 	 */
@@ -61,7 +61,7 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 
-	/*
+	/**
 	 * Validate that rotate(2) works and does not modify the 
 	 * original Picture object.
 	 */
@@ -75,7 +75,7 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 
-	/*
+	/**
 	 * Validate that rotate(3) works and does not modify the 
 	 * original Picture object.
 	 */
@@ -106,7 +106,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that flip(Picture.HORIZONTAL) works and does not modify the 
 	 * original Picture object.
 	 */
@@ -119,7 +119,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that flip(Picture.VERTICAL) works and does not modify the 
 	 * original Picture object.
 	 */
@@ -132,7 +132,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that flip(Picture.FORWARD_DIAGONAL) works and 
 	 * does not modify the original Picture object.
 	 */
@@ -145,7 +145,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that flip(Picture.BACKWARD_DIAGONAL) works and 
 	 * does not modify the original Picture object.
 	 */
@@ -159,22 +159,21 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
-	/*
+	/**
 	 * Tests that a non-recognized integer will throw an IllegalArgumentException
 	 * 
 	 */
 	public void testFlipIllegalArgument(){
 		Picture pic 		= Picture.loadPicture("CalOriginal.bmp");
-		Picture picCopy 	= new Picture(pic);
 		try{
-			Picture picTest		= pic.flip(-13527);
+			pic.flip(-13527);
 			assertTrue(false);
 		} catch (IllegalArgumentException e){
 			assertTrue(true);
 		}
 	}
 	
-	/*
+	/**
 	 * Tests flip by flipping in each fashion two times: result should be the original picture
 	 * 
 	 */
@@ -199,11 +198,11 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		
 	}
-	/*
+	/**
 	 * Validate that blur works and does not modify the 
 	 * original Picture object.
 	 */
-	public void testBlur()
+	public void testBlur1()
 	{
 		Picture pic 		= Picture.loadPicture("Creek.bmp");
 		Picture picCopy 	= new Picture(pic);
@@ -213,7 +212,22 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
-	/*
+	/**
+	 * Validate that blur will work even when the threshold is
+	 * larger than the picture.
+	 */
+	public void testBlur2() {
+		Picture testPic = Picture.loadPicture("dollar.bmp");
+		try {
+			testPic.blur(30);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertTrue(false);
+		}
+		assertTrue(true);
+	}
+	
+	/**
 	 * Validate that blur doesn't modify the picture if the threshold given is simply zero.
 	 * 
 	 */
@@ -224,7 +238,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(pic.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that showEdges works and does not modify the 
 	 * original Picture object.
 	 */
@@ -237,7 +251,7 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	/**
 	 * Validate that chromaKey works and does not modify the 
 	 * original Picture object.
 	 */
@@ -252,7 +266,35 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 
-	/*
+	/**
+	 * Tests darken on a picture and makes sure that all pixels are black if the parameter is 255
+	 * darken
+	 */
+	
+	public void testDarken(){
+		Picture pic = Picture.loadPicture("Colleen.bmp");
+		Picture testPic = pic.darken(255);
+		for(int w = 0; w<testPic.getWidth(); w++){
+			for(int h=0; h<testPic.getHeight(); h++){
+				assertEquals(testPic.getPixel(w,h).getColor(),(Color.black));
+			}
+		}
+	}
+	
+	/**
+	 * Tests lighten on a picture and makes sure that all pixels are white if parameter is 255
+	 */
+	public void testLighten(){
+		Picture pic = Picture.loadPicture("Colleen.bmp");
+		Picture testPic = pic.lighten(255);
+		for(int w = 0; w<testPic.getWidth(); w++){
+			for(int h=0; h<testPic.getHeight(); h++){
+				assertEquals(testPic.getPixel(w,h).getColor(),(Color.white));
+			}
+		}
+	}
+	
+	/**
 	 * Tests the color changing a solid color:
 	 * darken
 	 */
@@ -263,7 +305,7 @@ public class PictureTest extends TestCase {
 		assertTrue(darker.equals(pic.darken(30)));
 			
 	}
-	/*
+	/**
 	 * Tests the color changing a solid color:
 	 * lighten
 	 */
@@ -274,7 +316,7 @@ public class PictureTest extends TestCase {
 		assertTrue(lighter.equals(pic.lighten(30)));
 			
 	}
-	/*
+	/**
 	 * Tests the color changing a solid color:
 	 * addGreen
 	 */
@@ -285,7 +327,7 @@ public class PictureTest extends TestCase {
 		assertTrue(greener.equals(pic.addGreen(30)));
 			
 	}
-	/*
+	/**
 	 * Tests the color changing a solid color:
 	 * addBlue
 	 */
@@ -296,7 +338,8 @@ public class PictureTest extends TestCase {
 		assertTrue(bluer.equals(pic.addBlue(30)));
 			
 	}
-	/*
+	
+	/**
 	 * Tests the color changing a solid color:
 	 * addRed
 	 */
@@ -307,7 +350,8 @@ public class PictureTest extends TestCase {
 		assertTrue(reder.equals(pic.addRed(30)));	
 			
 	}
-	/*
+	
+	/**
 	 * Validate that paintBucket works and does not modify the 
 	 * original Picture object.
 	 */
@@ -320,7 +364,8 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	
+	/**
 	 * Validate that convertToAscii works and does not modify the 
 	 * original Picture object.
 	 */
@@ -333,7 +378,8 @@ public class PictureTest extends TestCase {
 		assertTrue(pic.equals(picCopy));
 		assertTrue(picCorrect.equals(picTest));
 	}
-	/*
+	
+	/**
 	 * Validate that showEdges works and does not modify the 
 	 * original Picture object (and this picture is cute)
 	 */
@@ -347,8 +393,29 @@ public class PictureTest extends TestCase {
 		assertTrue(picCorrect.equals(picTest));
 	}
 	
-	/*
-	 * Run-time test that shows run-times of blur with various picture sizes. Was used in blur analysis.
+	/**
+	 * Validate that showEdges returns a picture with only black and white pixels.
+	 */
+	public void testShowEdgesColors() {
+		Picture pic = Picture.loadPicture("Colleen.bmp");
+		Picture testPic = pic.showEdges(30); 
+		assertTrue(PictureTest.isOkColors(testPic));
+	}
+	
+	private static boolean isOkColors(Picture pic) {
+		boolean isOk = true;
+		 for (int w = 0 ; w < pic.getWidth() ; w++) {
+			 for (int h = 0 ; h < pic.getHeight() ; h++) {
+				 Pixel toCheck = pic.getPixel(w, h);
+				 if (!(toCheck.getColor().equals(Color.white) ||
+					 toCheck.getColor().equals(Color.black))) {
+					 isOk = false;
+				 }
+			 }
+		 }
+		 return isOk;
+	}
+	
 	/**
 	 * Validate that paintBucket will only paint colors that are linked
 	 * to the chosen pixel.
@@ -382,9 +449,8 @@ public class PictureTest extends TestCase {
 		System.out.println(times);
 	}
 
-	/*
-	 * Run-time test that shows run-times of blur with various thresholds. Was used in blur analysis.
 	/**
+	 * Run-time test that shows run-times of blur with various thresholds. Was used in blur analysis.
 	 * Test run-time of blur with different thresholds.
 	 */
 	public void testRunTimeThreshold(){
